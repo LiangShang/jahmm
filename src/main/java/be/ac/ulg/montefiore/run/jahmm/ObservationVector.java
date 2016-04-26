@@ -12,8 +12,7 @@ import java.text.NumberFormat;
  * This class holds an Observation described by a vector of reals.
  */
 public class ObservationVector extends Observation
-implements Cloneable, CentroidFactory<ObservationVector>
-{
+        implements Cloneable, CentroidFactory<ObservationVector> {
     final double[] value;
 
 
@@ -22,8 +21,7 @@ implements Cloneable, CentroidFactory<ObservationVector>
      *
      * @param dimension The dimension of the resulting vector.
      */
-    public ObservationVector(int dimension)
-    {
+    public ObservationVector(int dimension) {
         if (dimension <= 0)
             throw new IllegalArgumentException("Dimension must be strictly " +
                     "positive");
@@ -37,11 +35,10 @@ implements Cloneable, CentroidFactory<ObservationVector>
      *
      * @param value The value of this observation.  This array is copied.
      */
-    public ObservationVector(double[] value)
-    {
+    public ObservationVector(double[] value) {
         this(value.length);
 
-        for (int i = 0 ; i < value.length; i++)
+        for (int i = 0; i < value.length; i++)
             this.value[i] = value[i];
     }
 
@@ -49,8 +46,7 @@ implements Cloneable, CentroidFactory<ObservationVector>
     /**
      * Returns the dimension of this vector.
      */
-    public int dimension()
-    {
+    public int dimension() {
         return value.length;
     }
 
@@ -60,8 +56,7 @@ implements Cloneable, CentroidFactory<ObservationVector>
      *
      * @return The values of this observation. The array is copied.
      */
-    public double[] values()
-    {
+    public double[] values() {
         return value.clone();
     }
 
@@ -72,8 +67,7 @@ implements Cloneable, CentroidFactory<ObservationVector>
      * @param i The dimension of interest (0 &le; i &lt; dimension).
      * @return The value of the (i+1)-th dimension of this observation.
      */
-    public double value(int i)
-    {
+    public double value(int i) {
         return value[i];
     }
 
@@ -83,8 +77,7 @@ implements Cloneable, CentroidFactory<ObservationVector>
      *
      * @return The corresponding observation.
      */
-    public Centroid<ObservationVector> factor()
-    {
+    public Centroid<ObservationVector> factor() {
         return new CentroidObservationVector(this);
     }
 
@@ -95,10 +88,9 @@ implements Cloneable, CentroidFactory<ObservationVector>
      *
      * @param o The observation to sum with this one.
      * @return An {@link ObservationVector ObservationVector} which is the
-     *         sum of this observation and <code>o</code>.
+     * sum of this observation and <code>o</code>.
      */
-    public ObservationVector plus(ObservationVector o)
-    {
+    public ObservationVector plus(ObservationVector o) {
         if (dimension() != o.dimension())
             throw new IllegalArgumentException();
 
@@ -116,11 +108,11 @@ implements Cloneable, CentroidFactory<ObservationVector>
      *
      * @param c A scalar value.
      * @return An {@link ObservationVector ObservationVector} which is the
-     *         product of this observation and <code>c</code>.
+     * product of this observation and <code>c</code>.
      */
-    public ObservationVector times(double c)
-    {
-        ObservationVector p = (ObservationVector) clone();;
+    public ObservationVector times(double c) {
+        ObservationVector p = (ObservationVector) clone();
+        ;
 
         for (int i = 0; i < dimension(); i++)
             p.value[i] *= c;
@@ -135,10 +127,9 @@ implements Cloneable, CentroidFactory<ObservationVector>
      *
      * @param o The observation to subtract from this one.
      * @return An {@link ObservationVector ObservationVector} which is the
-     *         difference between this observation and <code>o</code>.
+     * difference between this observation and <code>o</code>.
      */
-    public ObservationVector minus(ObservationVector o)
-    {
+    public ObservationVector minus(ObservationVector o) {
         if (dimension() != o.dimension())
             throw new IllegalArgumentException();
 
@@ -150,8 +141,7 @@ implements Cloneable, CentroidFactory<ObservationVector>
     }
 
 
-    public String toString(NumberFormat numberFormat)
-    {
+    public String toString(NumberFormat numberFormat) {
         String s = "[";
 
         for (int i = 0; i < value.length; i++)
@@ -161,8 +151,7 @@ implements Cloneable, CentroidFactory<ObservationVector>
     }
 
 
-    public ObservationVector clone()
-    {
+    public ObservationVector clone() {
         return new ObservationVector(value);
     }
 }

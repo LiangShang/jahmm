@@ -13,28 +13,24 @@ import java.util.*;
  * ObservationReal}.
  */
 public class CentroidObservationReal
-implements Centroid<ObservationReal>
-{
+        implements Centroid<ObservationReal> {
     private double value;
 
 
-    public CentroidObservationReal(ObservationReal o)
-    {
+    public CentroidObservationReal(ObservationReal o) {
         this.value = o.value;
     }
 
 
     public void reevaluateAdd(ObservationReal e,
-            List<? extends ObservationReal> v)
-    {
-        value =    (value * (double) v.size() + e.value) / (v.size()+1.);
+                              List<? extends ObservationReal> v) {
+        value = (value * (double) v.size() + e.value) / (v.size() + 1.);
     }
 
 
     public void reevaluateRemove(ObservationReal e,
-            List<? extends ObservationReal> v)
-    {
-        value = ((value * (double) v.size()) - e.value) / (v.size()-1.);
+                                 List<? extends ObservationReal> v) {
+        value = ((value * (double) v.size()) - e.value) / (v.size() - 1.);
     }
 
 
@@ -47,8 +43,7 @@ implements Centroid<ObservationReal>
      *          ObservationReal}.
      * @return The distance to the centroid.
      */
-    public double distance(ObservationReal e)
-    {
+    public double distance(ObservationReal e) {
         return Math.abs(e.value - value);
     }
 }

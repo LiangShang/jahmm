@@ -14,25 +14,22 @@ import be.ac.ulg.montefiore.run.jahmm.*;
  * An implementation of the Baum-Welch learning algorithm.  It uses a
  * scaling mechanism so as to avoid underflows.
  * <p>
- * For more information on the scaling procedure, read <i>Rabiner</i> and 
+ * For more information on the scaling procedure, read <i>Rabiner</i> and
  * <i>Juang</i>'s <i>Fundamentals of speech recognition</i> (Prentice Hall,
  * 1993).
  */
 public class BaumWelchScaledLearner
-extends BaumWelchLearner
-{
+        extends BaumWelchLearner {
     /**
      * Initializes a Baum-Welch algorithm implementation.
      */
-    public BaumWelchScaledLearner()
-    {
+    public BaumWelchScaledLearner() {
     }
 
 
     protected <O extends Observation> ForwardBackwardCalculator
     generateForwardBackwardCalculator(List<? extends O> sequence,
-            Hmm<O> hmm)
-    {
+                                      Hmm<O> hmm) {
         return new ForwardBackwardScaledCalculator(sequence, hmm,
                 EnumSet.allOf(ForwardBackwardCalculator.Computation.class));
     }
@@ -46,14 +43,13 @@ extends BaumWelchLearner
      is equal to the inverse of the probability of the sequence. */
     protected <O extends Observation> double[][][]
     estimateXi(List<? extends O> sequence, ForwardBackwardCalculator fbc,
-            Hmm<O> hmm)
-    {
+               Hmm<O> hmm) {
         if (sequence.size() <= 1)
             throw new IllegalArgumentException("Observation sequence too " +
-            "short");
+                    "short");
 
         double xi[][][] =
-            new double[sequence.size() - 1][hmm.nbStates()][hmm.nbStates()];
+                new double[sequence.size() - 1][hmm.nbStates()][hmm.nbStates()];
 
         Iterator<? extends O> seqIterator = sequence.iterator();
         seqIterator.next();
@@ -64,9 +60,9 @@ extends BaumWelchLearner
             for (int i = 0; i < hmm.nbStates(); i++)
                 for (int j = 0; j < hmm.nbStates(); j++)
                     xi[t][i][j] = fbc.alphaElement(t, i) *
-                    hmm.getAij(i, j) *
-                    hmm.getOpdf(j).probability(observation) *
-                    fbc.betaElement(t + 1, j);
+                            hmm.getAij(i, j) *
+                            hmm.getOpdf(j).probability(observation) *
+                            fbc.betaElement(t + 1, j);
         }
 
         return xi;

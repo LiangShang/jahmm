@@ -12,8 +12,7 @@ import java.text.*;
  * This class implements observations made of a real value.
  */
 public class ObservationReal extends Observation
-implements CentroidFactory<ObservationReal>
-{
+        implements CentroidFactory<ObservationReal> {
 
     /**
      * The observation's value.
@@ -26,8 +25,7 @@ implements CentroidFactory<ObservationReal>
      *
      * @param value The value of this observation.
      */
-    public ObservationReal(double value)
-    {
+    public ObservationReal(double value) {
         this.value = value;
     }
 
@@ -37,14 +35,12 @@ implements CentroidFactory<ObservationReal>
      *
      * @return The corresponding observation.
      */
-    public Centroid<ObservationReal> factor()
-    {
+    public Centroid<ObservationReal> factor() {
         return new CentroidObservationReal(this);
     }
 
 
-    public String toString(NumberFormat numberFormat)
-    {
+    public String toString(NumberFormat numberFormat) {
         return numberFormat.format(value);
     }
 }

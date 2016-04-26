@@ -16,11 +16,9 @@ import be.ac.ulg.montefiore.run.jahmm.ObservationInteger;
  * the semi-colon.
  */
 public class ObservationIntegerWriter
-extends ObservationWriter<ObservationInteger>
-{
+        extends ObservationWriter<ObservationInteger> {
     public void write(ObservationInteger observation, Writer writer)
-    throws IOException
-    {
+            throws IOException {
         writer.write(observation.value + "; ");
     }
 }

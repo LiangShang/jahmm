@@ -15,12 +15,11 @@ import be.ac.ulg.montefiore.run.jahmm.Observation;
  * Reads an observation up to (and including) the semi-colon.
  * <p>
  * The syntax of each observation must follow the rules given in
- * {@link ObservationSequencesReader ObservationSequencesReader} (<i>e.g.</i> 
+ * {@link ObservationSequencesReader ObservationSequencesReader} (<i>e.g.</i>
  * the backslash character is only used to escape a new line and can't appear
  * in an observation).
  */
-public abstract class ObservationReader<O extends Observation>
-{
+public abstract class ObservationReader<O extends Observation> {
     /**
      * Reads an
      * {@link be.ac.ulg.montefiore.run.jahmm.Observation Observation} (followed
@@ -36,5 +35,5 @@ public abstract class ObservationReader<O extends Observation>
      * @return An ObservationInteger.
      */
     public abstract O read(StreamTokenizer st)
-    throws IOException, FileFormatException;
+            throws IOException, FileFormatException;
 }

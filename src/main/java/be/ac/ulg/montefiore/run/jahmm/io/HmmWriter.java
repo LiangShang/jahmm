@@ -14,33 +14,30 @@ import be.ac.ulg.montefiore.run.jahmm.*;
 /**
  * Writes a HMM to a text file compatible with {@link HmmReader}.
  */
-public class HmmWriter
-{
+public class HmmWriter {
     /**
      * Writes a HMM description.
      *
-     * @param writer The writer to write the HMM to.
+     * @param writer     The writer to write the HMM to.
      * @param opdfWriter The writer used to convert the observation's
-     *        distributions of the HMMs.
-     * @param hmm The HMM to write.
+     *                   distributions of the HMMs.
+     * @param hmm        The HMM to write.
      */
     static public <O extends Observation> void
     write(Writer writer, OpdfWriter<? extends Opdf<O>> opdfWriter, Hmm<O> hmm)
-    throws IOException
-    {
+            throws IOException {
         writer.write("Hmm v1.0\n\nNbStates " + hmm.nbStates() + "\n\n");
 
         for (int i = 0; i < hmm.nbStates(); i++)
             writeState(writer, opdfWriter, hmm, i);
     }
-    
-    
+
+
     @SuppressWarnings("unchecked") // Cannot guarantee type safety
     static private <O extends Observation, D extends Opdf<O>> void
     writeState(Writer writer, OpdfWriter<D> opdfWriter,
-            Hmm<O> hmm, int stateNb)
-    throws IOException
-    {
+               Hmm<O> hmm, int stateNb)
+            throws IOException {
         DecimalFormat formatter = new DecimalFormat("#0.######");
 
         writer.write("State\nPi " + formatter.format(hmm.getPi(stateNb)));

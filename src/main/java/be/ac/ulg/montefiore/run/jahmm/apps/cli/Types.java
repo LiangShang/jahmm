@@ -19,11 +19,9 @@ import be.ac.ulg.montefiore.run.jahmm.toolbox.MarkovGenerator;
  * A repository of all the observation types and opdfs and the related
  * readers, writers, factories,...
  */
-class Types
-{
+class Types {
     public static RelatedObjs<?> relatedObjs()
-    throws WrongArgumentsException
-    {
+            throws WrongArgumentsException {
         String opdf = Arguments.OPDF.get();
 
         if (opdf.equals("integer"))
@@ -39,93 +37,79 @@ class Types
 
 
 class IntegerRelatedObjects
-implements RelatedObjs<ObservationInteger>
-{
+        implements RelatedObjs<ObservationInteger> {
     final int range;
 
 
     public IntegerRelatedObjects()
-    throws WrongArgumentsException
-    {
+            throws WrongArgumentsException {
         range = Arguments.INTEGER_RANGE.getAsInt();
     }
 
 
-    public ObservationReader<ObservationInteger> observationReader()
-    {
+    public ObservationReader<ObservationInteger> observationReader() {
         return new ObservationIntegerReader(range);
     }
 
 
-    public ObservationWriter<ObservationInteger> observationWriter()
-    {
+    public ObservationWriter<ObservationInteger> observationWriter() {
         return new ObservationIntegerWriter();
     }
 
 
-    public OpdfFactory<? extends Opdf<ObservationInteger>> opdfFactory()
-    {
+    public OpdfFactory<? extends Opdf<ObservationInteger>> opdfFactory() {
         return new OpdfIntegerFactory(range);
     }
 
 
-    public OpdfReader<? extends Opdf<ObservationInteger>> opdfReader()
-    {
+    public OpdfReader<? extends Opdf<ObservationInteger>> opdfReader() {
         return new OpdfIntegerReader(range);
     }
 
 
-    public OpdfWriter<? extends Opdf<ObservationInteger>> opdfWriter()
-    {
+    public OpdfWriter<? extends Opdf<ObservationInteger>> opdfWriter() {
         return new OpdfIntegerWriter();
     }
 
 
     public List<List<ObservationInteger>> readSequences(Reader reader)
-    throws FileFormatException, IOException
-    {
+            throws FileFormatException, IOException {
         return ObservationSequencesReader.readSequences(observationReader(),
                 reader);
     }
 
 
     public MarkovGenerator<ObservationInteger>
-    generator(Hmm<ObservationInteger> hmm)
-    {
+    generator(Hmm<ObservationInteger> hmm) {
         return new MarkovGenerator<ObservationInteger>(hmm);
     }
 }
 
 
 class RealRelatedObjects
-implements RelatedObjs<ObservationReal>
-{
+        implements RelatedObjs<ObservationReal> {
     public final String opdf;
     public final int nb;
 
 
     public RealRelatedObjects(String opdf)
-    throws WrongArgumentsException
-    {
+            throws WrongArgumentsException {
         this.opdf = opdf;
         nb = Arguments.NB_GAUSSIANS.getAsInt();
     }
 
 
-    public ObservationRealReader observationReader()
-    {
+    public ObservationRealReader observationReader() {
         return new ObservationRealReader();
     }
 
 
-    public ObservationRealWriter observationWriter()
-    {
+    public ObservationRealWriter observationWriter() {
         return new ObservationRealWriter();
     }
 
 
-    public OpdfFactory<? extends Opdf<ObservationReal>> opdfFactory()
-    {
+    public OpdfFactory<? extends Opdf<ObservationReal>> opdfFactory() {
         if (opdf.equals("gaussian"))
             return new OpdfGaussianFactory();
         else { // Gaussian mixture
@@ -134,8 +118,7 @@ implements RelatedObjs<ObservationReal>
     }
 
 
-    public OpdfReader<? extends Opdf<ObservationReal>> opdfReader()
-    {
+    public OpdfReader<? extends Opdf<ObservationReal>> opdfReader() {
         if (opdf.equals("gaussian"))
             return new OpdfGaussianReader();
         else // Gaussian mixture
@@ -143,8 +126,7 @@ implements RelatedObjs<ObservationReal>
     }
 
 
-    public OpdfWriter<? extends Opdf<ObservationReal>> opdfWriter()
-    {
+    public OpdfWriter<? extends Opdf<ObservationReal>> opdfWriter() {
         if (opdf.equals("gaussian"))
             return new OpdfGaussianWriter();
         else // Gaussian mixture
@@ -153,77 +135,64 @@ implements RelatedObjs<ObservationReal>
 
 
     public List<List<ObservationReal>> readSequences(Reader reader)
-    throws FileFormatException, IOException
-    {
+            throws FileFormatException, IOException {
         return ObservationSequencesReader.readSequences(observationReader(),
                 reader);
     }
 
 
     public MarkovGenerator<ObservationReal>
-    generator(Hmm<ObservationReal> hmm)
-    {
+    generator(Hmm<ObservationReal> hmm) {
         return new MarkovGenerator<ObservationReal>(hmm);
     }
 }
 
 
-
-
 class VectorRelatedObjects
-implements RelatedObjs<ObservationVector>
-{
+        implements RelatedObjs<ObservationVector> {
     final int dimension;
 
 
     public VectorRelatedObjects()
-    throws WrongArgumentsException
-    {
+            throws WrongArgumentsException {
         dimension = Arguments.VECTOR_DIMENSION.getAsInt();
     }
 
 
-    public ObservationVectorReader observationReader()
-    {
+    public ObservationVectorReader observationReader() {
         return new ObservationVectorReader(dimension);
     }
 
 
-    public ObservationVectorWriter observationWriter()
-    {
+    public ObservationVectorWriter observationWriter() {
         return new ObservationVectorWriter();
     }
 
 
-    public OpdfFactory<? extends Opdf<ObservationVector>> opdfFactory()
-    {
+    public OpdfFactory<? extends Opdf<ObservationVector>> opdfFactory() {
         return new OpdfMultiGaussianFactory(dimension);
     }
 
 
-    public OpdfReader<? extends Opdf<ObservationVector>> opdfReader()
-    {
+    public OpdfReader<? extends Opdf<ObservationVector>> opdfReader() {
         return new OpdfMultiGaussianReader();
     }
 
 
-    public OpdfWriter<? extends Opdf<ObservationVector>> opdfWriter()
-    {
+    public OpdfWriter<? extends Opdf<ObservationVector>> opdfWriter() {
         return new OpdfMultiGaussianWriter();
     }
 
 
     public List<List<ObservationVector>> readSequences(Reader reader)
-    throws FileFormatException, IOException
-    {
+            throws FileFormatException, IOException {
         return ObservationSequencesReader.readSequences(observationReader(),
                 reader);
     }
 
 
     public MarkovGenerator<ObservationVector>
-    generator(Hmm<ObservationVector> hmm)
-    {
+    generator(Hmm<ObservationVector> hmm) {
         return new MarkovGenerator<ObservationVector>(hmm);
     }
 }

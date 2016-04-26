@@ -16,11 +16,9 @@ import be.ac.ulg.montefiore.run.jahmm.*;
  * semi-colon.
  */
 public class ObservationVectorWriter
-extends ObservationWriter<ObservationVector>
-{
+        extends ObservationWriter<ObservationVector> {
     public void write(ObservationVector observation, Writer writer)
-    throws IOException
-    {
+            throws IOException {
         String s = "[ ";
 
         for (int i = 0; i < observation.dimension(); i++)

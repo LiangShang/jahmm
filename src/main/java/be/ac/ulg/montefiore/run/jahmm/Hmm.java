@@ -10,19 +10,19 @@ import java.text.NumberFormat;
 import java.util.*;
 
 
-/** 
- *  Main Hmm class; it implements an Hidden Markov Model.
- *  An HMM is composed of:
- *  <ul>
- *  <li><i>states</i>: each state has a given probability of being initial
- *  (<i>pi</i>) and an associated observation probability function
- *  (<i>opdf</i>).  Each state is associated to an index; the first state
- *  is numbered 0, the last n-1 (where n is the number of states in the HMM);
- *  this number is given as an argument to the various functions to refer to
- *  the matching state. </li>
- *  <li><i>transition probabilities</i>: that is, the probability of going
- *  from state <i>i</i> to state <i>j</i> (<i>a<sub>i,j</sub></i>).</li>
- *  </ul>
+/**
+ * Main Hmm class; it implements an Hidden Markov Model.
+ * An HMM is composed of:
+ * <ul>
+ * <li><i>states</i>: each state has a given probability of being initial
+ * (<i>pi</i>) and an associated observation probability function
+ * (<i>opdf</i>).  Each state is associated to an index; the first state
+ * is numbered 0, the last n-1 (where n is the number of states in the HMM);
+ * this number is given as an argument to the various functions to refer to
+ * the matching state. </li>
+ * <li><i>transition probabilities</i>: that is, the probability of going
+ * from state <i>i</i> to state <i>j</i> (<i>a<sub>i,j</sub></i>).</li>
+ * </ul>
  * <p>
  * Important objects extensively used with HMMs are {@link Observation
  * Observation}s, observation sequences and set of observation sequences.
@@ -31,9 +31,9 @@ import java.util.*;
  * the vector being the i-th element of the sequence). A set of observation
  * sequences is a {@link java.util.List List} of such sequences.
  */
-public class Hmm<O extends Observation> 
-implements Serializable, Cloneable
-{
+public class Hmm<O extends Observation>
+        implements Serializable, Cloneable {
+    private static final long serialVersionUID = 2L;
     private double pi[];
     private double a[][];
     private ArrayList<Opdf<O>> opdfs;
@@ -43,15 +43,14 @@ implements Serializable, Cloneable
      * Creates a new HMM.  Each state has the same <i>pi</i> value and
      * the transition probabilities are all equal.
      *
-     * @param nbStates The (strictly positive) number of states of the HMM.
+     * @param nbStates    The (strictly positive) number of states of the HMM.
      * @param opdfFactory A pdf generator that is used to build the
-     *        pdfs associated to each state.
+     *                    pdfs associated to each state.
      */
-    public Hmm(int nbStates, OpdfFactory<? extends Opdf<O>> opdfFactory)
-    {
+    public Hmm(int nbStates, OpdfFactory<? extends Opdf<O>> opdfFactory) {
         if (nbStates <= 0)
             throw new IllegalArgumentException("Number of states must be " +
-            "strictly positive");
+                    "strictly positive");
 
         pi = new double[nbStates];
         a = new double[nbStates][nbStates];
@@ -70,18 +69,17 @@ implements Serializable, Cloneable
     /**
      * Creates a new HMM.  All the HMM parameters are given as arguments.
      *
-     * @param pi The initial probability values.  <code>pi[i]</code> is the
-     *        initial probability of state <code>i</code>. This array is
-     *        copied.
-     * @param a The state transition probability array. <code>a[i][j]</code>
-     *        is the probability of going from state <code>i</code> to state
-     *        <code>j</code>.  This array is copied.
+     * @param pi    The initial probability values.  <code>pi[i]</code> is the
+     *              initial probability of state <code>i</code>. This array is
+     *              copied.
+     * @param a     The state transition probability array. <code>a[i][j]</code>
+     *              is the probability of going from state <code>i</code> to state
+     *              <code>j</code>.  This array is copied.
      * @param opdfs The observation distributions.  <code>opdfs.get(i)</code>
-     *        is the observation distribution associated with state
-     *        <code>i</code>.  The distributions are not copied.
+     *              is the observation distribution associated with state
+     *              <code>i</code>.  The distributions are not copied.
      */
-    public Hmm(double[] pi, double[][] a, List<? extends Opdf<O>> opdfs)
-    {
+    public Hmm(double[] pi, double[][] a, List<? extends Opdf<O>> opdfs) {
         if (a.length == 0 || pi.length != a.length ||
                 opdfs.size() != a.length)
             throw new IllegalArgumentException("Wrong parameter");
@@ -92,7 +90,7 @@ implements Serializable, Cloneable
         for (int i = 0; i < a.length; i++) {
             if (a[i].length != a.length)
                 throw new IllegalArgumentException("'A' is not a square" +
-                "matrix");
+                        "matrix");
             this.a[i] = a[i].clone();
         }
 
@@ -107,11 +105,10 @@ implements Serializable, Cloneable
      *
      * @param nbStates The (strictly positive) number of states of the HMM.
      */
-    protected Hmm(int nbStates)
-    {
+    protected Hmm(int nbStates) {
         if (nbStates <= 0)
             throw new IllegalArgumentException("Number of states must be " +
-            "positive");
+                    "positive");
 
         pi = new double[nbStates];
         a = new double[nbStates][nbStates];
@@ -121,17 +118,14 @@ implements Serializable, Cloneable
             opdfs.add(null);
     }
 
-
     /**
      * Returns the number of states of this HMM.
      *
      * @return The number of states of this HMM.
      */
-    public int nbStates()
-    {
+    public int nbStates() {
         return pi.length;
     }
-
 
     /**
      * Returns the <i>pi</i> value associated with a given state.
@@ -140,25 +134,21 @@ implements Serializable, Cloneable
      *                <code>0 &le; stateNb &lt; nbStates()</code>
      * @return The <i>pi</i> value associated to <code>stateNb</code>.
      */
-    public double getPi(int stateNb)
-    {
+    public double getPi(int stateNb) {
         return pi[stateNb];
     }
-
 
     /**
      * Sets the <i>pi</i> value associated with a given state.
      *
      * @param stateNb A state number such that
      *                <code>0 &le; stateNb &lt; nbStates()</code>.
-     * @param value The <i>pi</i> value to associate to state number
-     *              <code>stateNb</code>
+     * @param value   The <i>pi</i> value to associate to state number
+     *                <code>stateNb</code>
      */
-    public void setPi(int stateNb, double value)
-    {
+    public void setPi(int stateNb, double value) {
         pi[stateNb] = value;
     }
-
 
     /**
      * Returns the opdf associated with a given state.
@@ -167,57 +157,49 @@ implements Serializable, Cloneable
      *                <code>0 &le; stateNb &lt; nbStates()</code>.
      * @return The opdf associated to state <code>stateNb</code>.
      */
-    public Opdf<O> getOpdf(int stateNb)
-    {
+    public Opdf<O> getOpdf(int stateNb) {
         return opdfs.get(stateNb);
     }
-
 
     /**
      * Sets the opdf associated with a given state.
      *
      * @param stateNb A state number such that
      *                <code>0 &le; stateNb &lt; nbStates()</code>.
-     * @param opdf An observation probability function.
+     * @param opdf    An observation probability function.
      */
-    public void setOpdf(int stateNb, Opdf<O> opdf)
-    {
+    public void setOpdf(int stateNb, Opdf<O> opdf) {
         opdfs.set(stateNb, opdf);
     }
-
 
     /**
      * Returns the probability associated with the transition going from
      * state <i>i</i> to state <i>j</i> (<i>a<sub>i,j</sub></i>).
      *
      * @param i The first state number such that
-     *        <code>0 &le; i &lt; nbStates()</code>.
+     *          <code>0 &le; i &lt; nbStates()</code>.
      * @param j The second state number such that
-     *        <code>0 &le; j &lt; nbStates()</code>.
+     *          <code>0 &le; j &lt; nbStates()</code>.
      * @return The probability associated to the transition going from
-     *         <code>i</code> to state <code>j</code>.
+     * <code>i</code> to state <code>j</code>.
      */
-    public double getAij(int i, int j)
-    {
+    public double getAij(int i, int j) {
         return a[i][j];
     }
-
 
     /**
      * Sets the probability associated to the transition going from
      * state <i>i</i> to state <i>j</i> (<i>A<sub>i,j</sub></i>).
      *
-     * @param i The first state number such that
-     *        <code>0 &le; i &lt; nbStates()</code>.
-     * @param j The second state number such that
-     *        <code>0 &le; j &lt; nbStates()</code>.
+     * @param i     The first state number such that
+     *              <code>0 &le; i &lt; nbStates()</code>.
+     * @param j     The second state number such that
+     *              <code>0 &le; j &lt; nbStates()</code>.
      * @param value The value of <i>A<sub>i,j</sub></i>.
      */
-    public void setAij(int i, int j, double value)
-    {
+    public void setAij(int i, int j, double value) {
         a[i][j] = value;
     }
-
 
     /**
      * Returns an array containing the most likely state sequence matching an
@@ -228,13 +210,11 @@ implements Serializable, Cloneable
      *
      * @param oseq A non-empty observation sequence.
      * @return An array containing the most likely sequence of state numbers.
-     *         This array can be modified.
+     * This array can be modified.
      */
-    public int[] mostLikelyStateSequence(List<? extends O> oseq)
-    {
+    public int[] mostLikelyStateSequence(List<? extends O> oseq) {
         return (new ViterbiCalculator(oseq, this)).stateSequence();
     }
-
 
     /**
      * Returns the probability of an observation sequence given this HMM.
@@ -242,11 +222,9 @@ implements Serializable, Cloneable
      * @param oseq A non-empty observation sequence.
      * @return The probability of this sequence.
      */
-    public double probability(List<? extends O> oseq)
-    {
+    public double probability(List<? extends O> oseq) {
         return (new ForwardBackwardCalculator(oseq, this)).probability();
     }
-
 
     /**
      * Returns the neperian logarithm of observation sequence's probability
@@ -256,12 +234,10 @@ implements Serializable, Cloneable
      * @param oseq A non-empty observation sequence.
      * @return The probability of this sequence.
      */
-    public double lnProbability(List<? extends O> oseq)
-    {
+    public double lnProbability(List<? extends O> oseq) {
         return (new ForwardBackwardScaledCalculator(oseq, this)).
-        lnProbability();
+                lnProbability();
     }
-
 
     /**
      * Returns the probability of an observation sequence along a state
@@ -273,8 +249,7 @@ implements Serializable, Cloneable
      *             <code>oseq</code>
      * @return The probability P[oseq,sseq|H], where H is this HMM.
      */
-    public double probability(List<? extends O> oseq, int[] sseq)
-    {
+    public double probability(List<? extends O> oseq, int[] sseq) {
         if (oseq.size() != sseq.length || oseq.isEmpty())
             throw new IllegalArgumentException();
 
@@ -282,15 +257,14 @@ implements Serializable, Cloneable
 
         Iterator<? extends O> oseqIterator = oseq.iterator();
 
-        for (int i = 0; i < sseq.length-1; i++)
+        for (int i = 0; i < sseq.length - 1; i++)
             probability *=
-                getOpdf(sseq[i]).probability(oseqIterator.next()) *
-                getAij(sseq[i], sseq[i+1]);
+                    getOpdf(sseq[i]).probability(oseqIterator.next()) *
+                            getAij(sseq[i], sseq[i + 1]);
 
-        return probability * getOpdf(sseq[sseq.length-1]).
-        probability(oseq.get(sseq.length-1));
+        return probability * getOpdf(sseq[sseq.length - 1]).
+                probability(oseq.get(sseq.length - 1));
     }
-
 
     /**
      * Gives a description of this HMM.
@@ -298,8 +272,7 @@ implements Serializable, Cloneable
      * @param nf A number formatter used to print numbers (e.g. Aij values).
      * @return A textual description of this HMM.
      */
-    public String toString(NumberFormat nf)
-    {
+    public String toString(NumberFormat nf) {
         String s = "HMM with " + nbStates() + " state(s)\n";
 
         for (int i = 0; i < nbStates(); i++) {
@@ -308,7 +281,7 @@ implements Serializable, Cloneable
             s += "  Aij:";
 
             for (int j = 0; j < nbStates(); j++)
-                s += " " + nf.format(getAij(i,j));
+                s += " " + nf.format(getAij(i, j));
             s += "\n";
 
             s += "  Opdf: " + ((Opdf<O>) getOpdf(i)).toString(nf) + "\n";
@@ -317,21 +290,17 @@ implements Serializable, Cloneable
         return s;
     }
 
-
     /**
      * Gives a description of this HMM.
      *
      * @return A textual description of this HMM.
      */
-    public String toString()
-    {
+    public String toString() {
         return toString(NumberFormat.getInstance());
     }
 
-
     public Hmm<O> clone()
-    throws CloneNotSupportedException
-    {
+            throws CloneNotSupportedException {
         Hmm<O> hmm = new Hmm<O>(nbStates());
 
         hmm.pi = pi.clone();
@@ -345,7 +314,4 @@ implements Serializable, Cloneable
 
         return hmm;
     }
-
-
-    private static final long serialVersionUID = 2L;
 }

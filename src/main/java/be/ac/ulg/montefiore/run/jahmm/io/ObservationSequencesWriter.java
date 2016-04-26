@@ -18,21 +18,19 @@ import be.ac.ulg.montefiore.run.jahmm.*;
  * The sequences written using this file can be read using the
  * {@link ObservationSequencesReader ObservationSequencesReader} class.
  */
-public class ObservationSequencesWriter
-{
+public class ObservationSequencesWriter {
     /**
      * Writes a set of sequences to file.
      *
-     * @param writer The writer to write to. It should use the "US-ASCII"
-     *               character set.
-     * @param ow The observation writer used to generate the observations. 
+     * @param writer    The writer to write to. It should use the "US-ASCII"
+     *                  character set.
+     * @param ow        The observation writer used to generate the observations.
      * @param sequences The set of observation sequences.
      */
     static public <O extends Observation> void
     write(Writer writer, ObservationWriter<? super O> ow,
-            List<? extends List<O>> sequences)
-    throws IOException
-    {
+          List<? extends List<O>> sequences)
+            throws IOException {
         for (List<O> s : sequences)
             write(s, ow, writer);
     }
@@ -44,8 +42,7 @@ public class ObservationSequencesWriter
      */
     static <O extends Observation> void
     write(List<O> sequence, ObservationWriter<? super O> ow, Writer writer)
-    throws IOException
-    {
+            throws IOException {
         for (O o : sequence)
             ow.write(o, writer);
 

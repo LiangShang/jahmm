@@ -12,8 +12,7 @@ import java.text.*;
  * This class holds an integer observation.
  */
 public class ObservationInteger extends Observation
-implements CentroidFactory<ObservationInteger>
-{
+        implements CentroidFactory<ObservationInteger> {
     /**
      * The observation's value.
      */
@@ -25,8 +24,7 @@ implements CentroidFactory<ObservationInteger>
      *
      * @param value The value of this observation.
      */
-    public ObservationInteger(int value)
-    {
+    public ObservationInteger(int value) {
         this.value = value;
     }
 
@@ -36,14 +34,12 @@ implements CentroidFactory<ObservationInteger>
      *
      * @return The corresponding observation.
      */
-    public Centroid<ObservationInteger> factor()
-    {
+    public Centroid<ObservationInteger> factor() {
         return new CentroidObservationInteger(this);
     }
 
 
-    public String toString(NumberFormat numberFormat)
-    {
+    public String toString(NumberFormat numberFormat) {
         return numberFormat.format(value);
     }
 }

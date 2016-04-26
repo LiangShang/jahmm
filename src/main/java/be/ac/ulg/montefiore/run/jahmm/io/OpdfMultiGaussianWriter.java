@@ -16,11 +16,9 @@ import be.ac.ulg.montefiore.run.jahmm.OpdfMultiGaussian;
  * with the {@link OpdfMultiGaussianReader} class.
  */
 public class OpdfMultiGaussianWriter
-extends OpdfWriter<OpdfMultiGaussian>
-{
+        extends OpdfWriter<OpdfMultiGaussian> {
     public void write(Writer writer, OpdfMultiGaussian opdf)
-    throws IOException
-    {
+            throws IOException {
         writer.write("MultiGaussianOPDF [ ");
         write(writer, opdf.mean());
         writer.write(" [");

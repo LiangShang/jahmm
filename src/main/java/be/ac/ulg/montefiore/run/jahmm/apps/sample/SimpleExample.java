@@ -54,22 +54,11 @@ import be.ac.ulg.montefiore.run.jahmm.toolbox.MarkovGenerator;
  * few) packets are lost.  Thus, the HMMs built here have two states
  * (jammed/not jammed).
  */
-public class SimpleExample
-{
+public class SimpleExample {
     /* Possible packet reception status */
 
-    public enum Packet {
-        OK, LOSS;
-
-        public ObservationDiscrete<Packet> observation() {
-            return new ObservationDiscrete<Packet>(this);
-        }
-    };
-
-
     static public void main(String[] argv)
-    throws java.io.IOException
-    {
+            throws java.io.IOException {
         /* Build a HMM and generate observation sequences using this HMM */
 
         Hmm<ObservationDiscrete<Packet>> hmm = buildHmm();
@@ -85,7 +74,7 @@ public class SimpleExample
 
         // This object measures the distance between two HMMs
         KullbackLeiblerDistanceCalculator klc =
-            new KullbackLeiblerDistanceCalculator();
+                new KullbackLeiblerDistanceCalculator();
 
         // Incrementally improve the solution
         for (int i = 0; i < 10; i++) {
@@ -102,7 +91,7 @@ public class SimpleExample
         ObservationDiscrete<Packet> packetLoss = Packet.LOSS.observation();
 
         List<ObservationDiscrete<Packet>> testSequence =
-            new ArrayList<ObservationDiscrete<Packet>>();
+                new ArrayList<ObservationDiscrete<Packet>>();
         testSequence.add(packetOk);
         testSequence.add(packetOk);
         testSequence.add(packetLoss);
@@ -115,22 +104,20 @@ public class SimpleExample
         (new GenericHmmDrawerDot()).write(learntHmm, "learntHmm.dot");
     }
 
+    ;
 
-    /* The HMM this example is based on */
-
-    static Hmm<ObservationDiscrete<Packet>> buildHmm()
-    {
+    static Hmm<ObservationDiscrete<Packet>> buildHmm() {
         Hmm<ObservationDiscrete<Packet>> hmm =
-            new Hmm<ObservationDiscrete<Packet>>(2,
-                    new OpdfDiscreteFactory<Packet>(Packet.class));
+                new Hmm<ObservationDiscrete<Packet>>(2,
+                        new OpdfDiscreteFactory<Packet>(Packet.class));
 
         hmm.setPi(0, 0.95);
         hmm.setPi(1, 0.05);
 
         hmm.setOpdf(0, new OpdfDiscrete<Packet>(Packet.class,
-                new double[] { 0.95, 0.05 }));
+                new double[]{0.95, 0.05}));
         hmm.setOpdf(1, new OpdfDiscrete<Packet>(Packet.class,
-                new double[] { 0.20, 0.80 }));
+                new double[]{0.20, 0.80}));
 
         hmm.setAij(0, 1, 0.05);
         hmm.setAij(0, 0, 0.95);
@@ -141,21 +128,20 @@ public class SimpleExample
     }
 
 
-    /* Initial guess for the Baum-Welch algorithm */
+    /* The HMM this example is based on */
 
-    static Hmm<ObservationDiscrete<Packet>> buildInitHmm()
-    {
+    static Hmm<ObservationDiscrete<Packet>> buildInitHmm() {
         Hmm<ObservationDiscrete<Packet>> hmm =
-            new Hmm<ObservationDiscrete<Packet>>(2,
-                    new OpdfDiscreteFactory<Packet>(Packet.class));
+                new Hmm<ObservationDiscrete<Packet>>(2,
+                        new OpdfDiscreteFactory<Packet>(Packet.class));
 
         hmm.setPi(0, 0.50);
         hmm.setPi(1, 0.50);
 
         hmm.setOpdf(0, new OpdfDiscrete<Packet>(Packet.class,
-                new double[] { 0.8, 0.2 }));
+                new double[]{0.8, 0.2}));
         hmm.setOpdf(1, new OpdfDiscrete<Packet>(Packet.class,
-                new double[] { 0.1, 0.9 }));
+                new double[]{0.1, 0.9}));
 
         hmm.setAij(0, 1, 0.2);
         hmm.setAij(0, 0, 0.8);
@@ -166,11 +152,10 @@ public class SimpleExample
     }
 
 
-    /* Generate several observation sequences using a HMM */
+    /* Initial guess for the Baum-Welch algorithm */
 
     static <O extends Observation> List<List<O>>
-    generateSequences(Hmm<O> hmm)
-    {
+    generateSequences(Hmm<O> hmm) {
         MarkovGenerator<O> mg = new MarkovGenerator<O>(hmm);
 
         List<List<O>> sequences = new ArrayList<List<O>>();
@@ -178,5 +163,16 @@ public class SimpleExample
             sequences.add(mg.observationSequence(100));
 
         return sequences;
+    }
+
+
+    /* Generate several observation sequences using a HMM */
+
+    public enum Packet {
+        OK, LOSS;
+
+        public ObservationDiscrete<Packet> observation() {
+            return new ObservationDiscrete<Packet>(this);
+        }
     }
 }

@@ -39,7 +39,7 @@ import be.ac.ulg.montefiore.run.jahmm.*;
  * Hmm
  * v1.0
  * NbStates 2
- * 
+ *
  * State
  * Pi 0.7
  * A 0.1 0.9
@@ -52,19 +52,17 @@ import be.ac.ulg.montefiore.run.jahmm.*;
  * </pre>
  * The lines starting with 'IntegerOPDF' are distributions descriptions.
  */
-public class HmmReader
-{
+public class HmmReader {
     /**
      * Reads a HMM from a text file.
      *
-     * @param reader The reader to read the HMM description from.
+     * @param reader     The reader to read the HMM description from.
      * @param opdfReader The {@link OpdfReader} used to read the observation
-     *        distributions.
+     *                   distributions.
      */
     public static <O extends Observation> Hmm<O>
     read(Reader reader, OpdfReader<? extends Opdf<O>> opdfReader)
-    throws IOException, FileFormatException
-    {
+            throws IOException, FileFormatException {
         StreamTokenizer st = new StreamTokenizer(reader);
         initSyntaxTable(st);
 
@@ -83,11 +81,10 @@ public class HmmReader
 
 
     static private <O extends Observation> void
-    readState(StreamTokenizer st, int nbStates,    int stateNb, double[] pi,
-            double[][] a,
-            List<Opdf<O>> opdfs, OpdfReader<? extends Opdf<O>> opdfReader)
-    throws IOException, FileFormatException
-    {
+    readState(StreamTokenizer st, int nbStates, int stateNb, double[] pi,
+              double[][] a,
+              List<Opdf<O>> opdfs, OpdfReader<? extends Opdf<O>> opdfReader)
+            throws IOException, FileFormatException {
         readWords(st, "State", "Pi");
         pi[stateNb] = readNumber(st);
 
@@ -102,12 +99,11 @@ public class HmmReader
     /**
      * Reads some keywords out of a {@link StreamTokenizer}.
      *
-     * @param st A stream tokenizer.
+     * @param st    A stream tokenizer.
      * @param words The words to read, in the right order.
      */
     static void readWords(StreamTokenizer st, String... words)
-    throws IOException, FileFormatException
-    {
+            throws IOException, FileFormatException {
         for (String word : words) {
             st.nextToken();
 
@@ -117,7 +113,7 @@ public class HmmReader
                 else
                     throw new FileFormatException(st.lineno(),
                             "Syntax error: unexpected token '" +
-                            st.sval + "', ('" + word + "' expected)");
+                                    st.sval + "', ('" + word + "' expected)");
 
             if (st.ttype > 0) // Single character token
                 if (word.length() == 1 && st.ttype == (int) word.charAt(0))
@@ -125,7 +121,7 @@ public class HmmReader
                 else
                     throw new FileFormatException(st.lineno(),
                             "Syntax error: unexpected token '" +
-                            (char) st.ttype + "' (" + word + "' expected)");
+                                    (char) st.ttype + "' (" + word + "' expected)");
 
             throw new FileFormatException(st.lineno(), "Syntax error: '" +
                     word + "' expected");
@@ -134,8 +130,7 @@ public class HmmReader
 
 
     static double readNumber(StreamTokenizer st)
-    throws IOException, FileFormatException
-    {
+            throws IOException, FileFormatException {
         st.nextToken();
 
         if (st.ttype != StreamTokenizer.TT_NUMBER)
@@ -147,8 +142,7 @@ public class HmmReader
 
 
     /* Initialize the syntax table of a stream tokenizer */
-    static void initSyntaxTable(StreamTokenizer st)
-    {
+    static void initSyntaxTable(StreamTokenizer st) {
         st.resetSyntax();
         st.parseNumbers();
         st.wordChars('a', 'z');

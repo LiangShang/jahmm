@@ -13,12 +13,12 @@ import java.util.*;
  * This class implements a distribution over a finite set of elements.
  * This set is implemented as an <code>enum</code>.
  */
-public class OpdfDiscrete<E extends Enum<E>> 
-implements Opdf<ObservationDiscrete<E>>
-{
-    protected OpdfInteger distribution;
+public class OpdfDiscrete<E extends Enum<E>>
+        implements Opdf<ObservationDiscrete<E>> {
+    private static final long serialVersionUID = 1L;
     protected final List<E> values;
-    protected final EnumMap<E,ObservationInteger> toIntegerMap;
+    protected final EnumMap<E, ObservationInteger> toIntegerMap;
+    protected OpdfInteger distribution;
 
 
     /**
@@ -28,10 +28,9 @@ implements Opdf<ObservationDiscrete<E>>
      * distributed.
      *
      * @param valuesClass An {@link Enum Enum} class representing the set of
-     *      values.
+     *                    values.
      */
-    public OpdfDiscrete(Class<E> valuesClass)
-    {
+    public OpdfDiscrete(Class<E> valuesClass) {
         values = new ArrayList<E>(EnumSet.allOf(valuesClass));
 
         if (values.isEmpty())
@@ -45,15 +44,14 @@ implements Opdf<ObservationDiscrete<E>>
     /**
      * Builds a new probability distribution which operates on integer values.
      *
-     * @param valuesClass An {@link Enum Enum} class representing the set of
-     *      values.
+     * @param valuesClass   An {@link Enum Enum} class representing the set of
+     *                      values.
      * @param probabilities Array holding one probability for each possible
-     *      value (<i>i.e.</i> such that <code>probabilities[i]</code> is the
-     *      probability of the observation <code>i</code>th element of
-     *      <code>values</code>.
+     *                      value (<i>i.e.</i> such that <code>probabilities[i]</code> is the
+     *                      probability of the observation <code>i</code>th element of
+     *                      <code>values</code>.
      */
-    public OpdfDiscrete(Class<E> valuesClass, double[] probabilities)
-    {
+    public OpdfDiscrete(Class<E> valuesClass, double[] probabilities) {
         values = new ArrayList<E>(EnumSet.allOf(valuesClass));
 
         if (probabilities.length == 0 || values.size() != probabilities.length)
@@ -63,11 +61,9 @@ implements Opdf<ObservationDiscrete<E>>
         toIntegerMap = createMap(valuesClass);
     }
 
-
-    private EnumMap<E,ObservationInteger> createMap(Class<E> valuesClass)
-    {
-        EnumMap<E,ObservationInteger> result =
-            new EnumMap<E,ObservationInteger>(valuesClass);
+    private EnumMap<E, ObservationInteger> createMap(Class<E> valuesClass) {
+        EnumMap<E, ObservationInteger> result =
+                new EnumMap<E, ObservationInteger>(valuesClass);
 
         for (E value : values)
             result.put(value, new ObservationInteger(value.ordinal()));
@@ -75,27 +71,20 @@ implements Opdf<ObservationDiscrete<E>>
         return result;
     }
 
-
-    public double probability(ObservationDiscrete o){
+    public double probability(ObservationDiscrete o) {
         return distribution.probability(toIntegerMap.get(o.value));
     }
 
-
-    public ObservationDiscrete<E> generate()
-    {
+    public ObservationDiscrete<E> generate() {
         return
-        new ObservationDiscrete<E>(values.get(distribution.generate().value));
+                new ObservationDiscrete<E>(values.get(distribution.generate().value));
     }
 
-
-    public void fit(ObservationDiscrete<E>... oa)
-    {
+    public void fit(ObservationDiscrete<E>... oa) {
         fit(Arrays.asList(oa));
     }
 
-
-    public void fit(Collection<? extends ObservationDiscrete<E>> co)
-    {
+    public void fit(Collection<? extends ObservationDiscrete<E>> co) {
         List<ObservationInteger> dco = new ArrayList<ObservationInteger>();
 
         for (ObservationDiscrete<E> o : co)
@@ -104,16 +93,12 @@ implements Opdf<ObservationDiscrete<E>>
         distribution.fit(dco);
     }
 
-
-    public void fit(ObservationDiscrete<E>[] o, double[] weights)
-    {
+    public void fit(ObservationDiscrete<E>[] o, double[] weights) {
         fit(Arrays.asList(o), weights);
     }
 
-
     public void fit(Collection<? extends ObservationDiscrete<E>> co,
-            double[] weights)
-    {
+                    double[] weights) {
         List<ObservationInteger> dco = new ArrayList<ObservationInteger>();
 
         for (ObservationDiscrete<E> o : co)
@@ -122,40 +107,31 @@ implements Opdf<ObservationDiscrete<E>>
         distribution.fit(dco, weights);
     }
 
-
     @SuppressWarnings("unchecked")
-    public OpdfDiscrete<E> clone()
-    {
+    public OpdfDiscrete<E> clone() {
         try {
             OpdfDiscrete<E> opdfDiscrete = (OpdfDiscrete<E>) super.clone();
             opdfDiscrete.distribution = distribution.clone();
             return opdfDiscrete;
-        } catch(CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
             throw new InternalError();
         }
     }
 
-
-    public String toString()
-    {
+    public String toString() {
         return toString(NumberFormat.getInstance());
     }
 
-
-    public String toString(NumberFormat numberFormat)
-    {
+    public String toString(NumberFormat numberFormat) {
         String s = "Discrete distribution --- ";
 
-        for (int i = 0; i < values.size();) {
+        for (int i = 0; i < values.size(); ) {
             ObservationDiscrete o = new ObservationDiscrete<E>(values.get(i));
 
             s += o + " " + numberFormat.format(probability(o)) +
-            ((++i < values.size()) ? ", " : "");
+                    ((++i < values.size()) ? ", " : "");
         }
 
         return s;
     }
-
-
-    private static final long serialVersionUID = 1L;
 }

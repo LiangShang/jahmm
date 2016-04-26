@@ -16,8 +16,7 @@ import be.ac.ulg.montefiore.run.jahmm.Hmm;
  * The HMM objects are simply deserialized.  HMMs could thus be unreadable using
  * a different release of this library.
  */
-public class HmmBinaryReader
-{
+public class HmmBinaryReader {
     /**
      * Reads a HMM from a byte stream.
      *
@@ -25,14 +24,12 @@ public class HmmBinaryReader
      * @return The {@link be.ac.ulg.montefiore.run.jahmm.Hmm HMM} read.
      */
     static public Hmm<?> read(InputStream stream)
-    throws IOException
-    {
+            throws IOException {
         ObjectInputStream ois = new ObjectInputStream(stream);
 
         try {
             return (Hmm) ois.readObject();
-        }
-        catch(ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

@@ -24,26 +24,23 @@ import be.ac.ulg.montefiore.run.jahmm.OpdfMultiGaussian;
  * <p>
  * The second describes the covariance matrix; it is given line by line, from
  * top to bottom. Each line is represented by the values of its elements, from
- * left to right, separated by a space and between brackets.  
+ * left to right, separated by a space and between brackets.
  * <p>
  * For example, reading<br>
  * <tt>MultiGaussianOPDF [ [ 5. 5. ] [ [ 1.2 .3 ] [ .3 4. ] ] ]</tt>
  * returns a distribution equivalent to<br>
  * <code>new OpdfMultiGaussian(new double[] { 5., 5. },
- *       new double[][] { { 1.2, .3 }, { .3, 4. } })</code>.
+ * new double[][] { { 1.2, .3 }, { .3, 4. } })</code>.
  */
 public class OpdfMultiGaussianReader
-extends OpdfReader<OpdfMultiGaussian>
-{
-    String keyword()
-    {
+        extends OpdfReader<OpdfMultiGaussian> {
+    String keyword() {
         return "MultiGaussianOPDF";
     }
 
 
     public OpdfMultiGaussian read(StreamTokenizer st)
-    throws IOException, FileFormatException
-    {
+            throws IOException, FileFormatException {
         HmmReader.readWords(st, keyword(), "[");
 
         double[] means = OpdfReader.read(st, -1);

@@ -13,8 +13,7 @@ import be.ac.ulg.montefiore.run.jahmm.*;
 /**
  * An implementation of the K-Means learning algorithm.
  */
-public class KMeansLearner<O extends Observation & CentroidFactory<? super O>>
-{
+public class KMeansLearner<O extends Observation & CentroidFactory<? super O>> {
     private Clusters<O> clusters;
     private int nbStates;
     private List<? extends List<? extends O>> obsSeqs;
@@ -26,20 +25,19 @@ public class KMeansLearner<O extends Observation & CentroidFactory<? super O>>
      * Initializes a K-Means algorithm implementation.  This algorithm
      * finds a HMM that models a set of observation sequences.
      *
-     * @param nbStates  The number of states the resulting HMM will be made of.
+     * @param nbStates    The number of states the resulting HMM will be made of.
      * @param opdfFactory A class that builds the observation probability
      *                    distributions associated to the states of the HMM.
-     * @param sequences A vector of observation sequences.  Each observation
-     *                sequences is a vector of
-     *                {@link be.ac.ulg.montefiore.run.jahmm.Observation
-     *                observations} compatible with the
-     *                {@link be.ac.ulg.montefiore.run.jahmm.CentroidFactory
-     *                k-means algorithm}.
+     * @param sequences   A vector of observation sequences.  Each observation
+     *                    sequences is a vector of
+     *                    {@link be.ac.ulg.montefiore.run.jahmm.Observation
+     *                    observations} compatible with the
+     *                    {@link be.ac.ulg.montefiore.run.jahmm.CentroidFactory
+     *                    k-means algorithm}.
      */
     public KMeansLearner(int nbStates,
-            OpdfFactory<? extends Opdf<O>> opdfFactory,
-            List<? extends List<? extends O>> sequences)
-    {
+                         OpdfFactory<? extends Opdf<O>> opdfFactory,
+                         List<? extends List<? extends O>> sequences) {
         this.obsSeqs = sequences;
         this.opdfFactory = opdfFactory;
         this.nbStates = nbStates;
@@ -49,6 +47,14 @@ public class KMeansLearner<O extends Observation & CentroidFactory<? super O>>
         terminated = false;
     }
 
+    static <T> List<T> flat(List<? extends List<? extends T>> lists) {
+        List<T> v = new ArrayList<T>();
+
+        for (List<? extends T> list : lists)
+            v.addAll(list);
+
+        return v;
+    }
 
     /**
      * Performs one iteration of the K-Means algorithm.
@@ -57,8 +63,7 @@ public class KMeansLearner<O extends Observation & CentroidFactory<? super O>>
      *
      * @return A new, updated HMM.
      */
-    public Hmm<O> iterate()
-    {
+    public Hmm<O> iterate() {
         Hmm<O> hmm = new Hmm<O>(nbStates, opdfFactory);
 
         learnPi(hmm);
@@ -70,37 +75,31 @@ public class KMeansLearner<O extends Observation & CentroidFactory<? super O>>
         return hmm;
     }
 
-
     /**
      * Returns <code>true</code> if the algorithm has reached a fix point,
      * else returns <code>false</code>.
      */
-    public boolean isTerminated()
-    {
+    public boolean isTerminated() {
         return terminated;
     }
-
 
     /**
      * Does iterations of the K-Means algorithm until a fix point is reached.
      *
      * @return The HMM that best matches the set of observation sequences given
-     *         (according to the K-Means algorithm).
+     * (according to the K-Means algorithm).
      */
-    public Hmm<O> learn()
-    {
+    public Hmm<O> learn() {
         Hmm<O> hmm;
 
         do
             hmm = iterate();
-        while(!isTerminated());
+        while (!isTerminated());
 
         return hmm;
     }
 
-
-    private void learnPi(Hmm<?> hmm)
-    {
+    private void learnPi(Hmm<?> hmm) {
         double[] pi = new double[nbStates];
 
         for (int i = 0; i < nbStates; i++)
@@ -113,9 +112,7 @@ public class KMeansLearner<O extends Observation & CentroidFactory<? super O>>
             hmm.setPi(i, pi[i] / obsSeqs.size());
     }
 
-
-    private void learnAij(Hmm<O> hmm)
-    {
+    private void learnAij(Hmm<O> hmm) {
         for (int i = 0; i < hmm.nbStates(); i++)
             for (int j = 0; j < hmm.nbStates(); j++)
                 hmm.setAij(i, j, 0.);
@@ -129,10 +126,10 @@ public class KMeansLearner<O extends Observation & CentroidFactory<? super O>>
             for (int i = 1; i < obsSeq.size(); i++) {
                 first_state = second_state;
                 second_state =
-                    clusters.clusterNb(obsSeq.get(i));
+                        clusters.clusterNb(obsSeq.get(i));
 
                 hmm.setAij(first_state, second_state,
-                        hmm.getAij(first_state, second_state)+1.);
+                        hmm.getAij(first_state, second_state) + 1.);
             }
         }
 
@@ -152,9 +149,7 @@ public class KMeansLearner<O extends Observation & CentroidFactory<? super O>>
         }
     }
 
-
-    private void learnOpdf(Hmm<O> hmm)
-    {
+    private void learnOpdf(Hmm<O> hmm) {
         for (int i = 0; i < hmm.nbStates(); i++) {
             Collection<O> clusterObservations = clusters.cluster(i);
 
@@ -165,10 +160,8 @@ public class KMeansLearner<O extends Observation & CentroidFactory<? super O>>
         }
     }
 
-
     /* Return true if no modification */
-    private boolean optimizeCluster(Hmm<O> hmm)
-    {
+    private boolean optimizeCluster(Hmm<O> hmm) {
         boolean modif = false;
 
         for (List<? extends O> obsSeq : obsSeqs) {
@@ -188,54 +181,18 @@ public class KMeansLearner<O extends Observation & CentroidFactory<? super O>>
 
         return !modif;
     }
-
-
-    static <T> List<T> flat(List<? extends List<? extends T>> lists)
-    {
-        List<T> v = new ArrayList<T>();
-
-        for (List<? extends T> list : lists)
-            v.addAll(list);
-
-        return v;
-    }
 }
 
 
 /*
  * This class holds the matching between observations and clusters.
  */
-class Clusters<O extends CentroidFactory<? super O>>
-{
-    class Value
-    {
-        private int clusterNb;
-
-        Value(int clusterNb)
-        {
-            this.clusterNb = clusterNb;
-        }
-
-        void setClusterNb(int clusterNb)
-        {
-            this.clusterNb = clusterNb;
-        }
-
-        int getClusterNb()
-        {
-            return clusterNb;
-        }
-    }
-
-
-    private Hashtable<O,Value> clustersHash;
+class Clusters<O extends CentroidFactory<? super O>> {
+    private Hashtable<O, Value> clustersHash;
     private ArrayList<Collection<O>> clusters;
+    public Clusters(int k, List<? extends O> observations) {
 
-
-    public Clusters(int k, List<? extends O> observations)
-    {
-
-        clustersHash = new Hashtable<O,Value>();
+        clustersHash = new Hashtable<O, Value>();
         clusters = new ArrayList<Collection<O>>();
 
         KMeansCalculator<O> kmc = new KMeansCalculator<O>(k, observations);
@@ -249,35 +206,41 @@ class Clusters<O extends CentroidFactory<? super O>>
         }
     }
 
-
-    public boolean isInCluster(Observation o, int clusterNb)
-    {
+    public boolean isInCluster(Observation o, int clusterNb) {
         return clusterNb(o) == clusterNb;
     }
 
-
-    public int clusterNb(Observation o)
-    {
+    public int clusterNb(Observation o) {
         return clustersHash.get(o).getClusterNb();
     }
 
-
-    public Collection<O> cluster(int clusterNb)
-    {
+    public Collection<O> cluster(int clusterNb) {
         return clusters.get(clusterNb);
     }
 
-
-    public void remove(Observation o, int clusterNb)
-    {
+    public void remove(Observation o, int clusterNb) {
         clustersHash.get(o).setClusterNb(-1);
         clusters.get(clusterNb).remove(o);
     }
 
-
-    public void put(O o, int clusterNb)
-    {
+    public void put(O o, int clusterNb) {
         clustersHash.get(o).setClusterNb(clusterNb);
         clusters.get(clusterNb).add(o);
+    }
+
+    class Value {
+        private int clusterNb;
+
+        Value(int clusterNb) {
+            this.clusterNb = clusterNb;
+        }
+
+        int getClusterNb() {
+            return clusterNb;
+        }
+
+        void setClusterNb(int clusterNb) {
+            this.clusterNb = clusterNb;
+        }
     }
 }

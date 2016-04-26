@@ -14,8 +14,7 @@ import be.ac.ulg.montefiore.run.jahmm.*;
  * An implementation of the Baum-Welch learning algorithm.  This algorithm
  * finds a HMM that models a set of observation sequences.
  */
-public class BaumWelchLearner
-{
+public class BaumWelchLearner {
     /**
      * Number of iterations performed by the {@link #learn} method.
      */
@@ -25,8 +24,7 @@ public class BaumWelchLearner
     /**
      * Initializes a Baum-Welch instance.
      */
-    public BaumWelchLearner()
-    {
+    public BaumWelchLearner() {
     }
 
 
@@ -35,19 +33,18 @@ public class BaumWelchLearner
      * In one iteration, a new HMM is computed using a previously estimated
      * HMM.
      *
-     * @param hmm A previously estimated HMM.
+     * @param hmm       A previously estimated HMM.
      * @param sequences The observation sequences on which the learning is
-     *         based.  Each sequence must have a length higher or equal to
-         *         2.
+     *                  based.  Each sequence must have a length higher or equal to
+     *                  2.
      * @return A new, updated HMM.
      */
     public <O extends Observation> Hmm<O>
-    iterate(Hmm<O> hmm, List<? extends List<? extends O>> sequences)
-    {
+    iterate(Hmm<O> hmm, List<? extends List<? extends O>> sequences) {
         Hmm<O> nhmm;
         try {
             nhmm = hmm.clone();
-        } catch(CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
             throw new InternalError();
         }
 
@@ -69,7 +66,7 @@ public class BaumWelchLearner
         int g = 0;
         for (List<? extends O> obsSeq : sequences) {
             ForwardBackwardCalculator fbc =
-                generateForwardBackwardCalculator(obsSeq, hmm);
+                    generateForwardBackwardCalculator(obsSeq, hmm);
 
             double xi[][][] = estimateXi(obsSeq, fbc, hmm);
             double gamma[][] = allGamma[g++] = estimateGamma(xi, fbc);
@@ -127,8 +124,7 @@ public class BaumWelchLearner
 
 
     protected <O extends Observation> ForwardBackwardCalculator
-    generateForwardBackwardCalculator(List<? extends O> sequence, Hmm<O> hmm)
-    {
+    generateForwardBackwardCalculator(List<? extends O> sequence, Hmm<O> hmm) {
         return new ForwardBackwardCalculator(sequence, hmm,
                 EnumSet.allOf(ForwardBackwardCalculator.Computation.class));
     }
@@ -139,16 +135,15 @@ public class BaumWelchLearner
      * Baum-Welch algorithm.
      *
      * @param initialHmm An initial estimation of the expected HMM.  This
-     *         estimate is critical as the Baum-Welch algorithm only find
-     *         local minima of its likelihood function.
-     * @param sequences The observation sequences on which the learning is
-     *         based.  Each sequence must have a length higher or equal to 2.
+     *                   estimate is critical as the Baum-Welch algorithm only find
+     *                   local minima of its likelihood function.
+     * @param sequences  The observation sequences on which the learning is
+     *                   based.  Each sequence must have a length higher or equal to 2.
      * @return The HMM that best matches the set of observation sequences given
-     *         (according to the Baum-Welch algorithm).
+     * (according to the Baum-Welch algorithm).
      */
     public <O extends Observation> Hmm<O>
-    learn(Hmm<O> initialHmm, List<? extends List<? extends O>> sequences)
-    {
+    learn(Hmm<O> initialHmm, List<? extends List<? extends O>> sequences) {
         Hmm<O> hmm = initialHmm;
 
         for (int i = 0; i < nbIterations; i++)
@@ -160,14 +155,13 @@ public class BaumWelchLearner
 
     protected <O extends Observation> double[][][]
     estimateXi(List<? extends O> sequence, ForwardBackwardCalculator fbc,
-            Hmm<O> hmm)
-    {
+               Hmm<O> hmm) {
         if (sequence.size() <= 1)
             throw new IllegalArgumentException("Observation sequence too " +
-            "short");
+                    "short");
 
         double xi[][][] =
-            new double[sequence.size()-1][hmm.nbStates()][hmm.nbStates()];
+                new double[sequence.size() - 1][hmm.nbStates()][hmm.nbStates()];
         double probability = fbc.probability();
 
         Iterator<? extends O> seqIterator = sequence.iterator();
@@ -179,9 +173,9 @@ public class BaumWelchLearner
             for (int i = 0; i < hmm.nbStates(); i++)
                 for (int j = 0; j < hmm.nbStates(); j++)
                     xi[t][i][j] = fbc.alphaElement(t, i) *
-                    hmm.getAij(i, j) *
-                    hmm.getOpdf(j).probability(o) *
-                    fbc.betaElement(t+1, j) / probability;
+                            hmm.getAij(i, j) *
+                            hmm.getOpdf(j).probability(o) *
+                            fbc.betaElement(t + 1, j) / probability;
         }
 
         return xi;
@@ -194,8 +188,7 @@ public class BaumWelchLearner
      * the scaled alpha and beta arrays).
      */
     protected double[][]
-    estimateGamma(double[][][] xi, ForwardBackwardCalculator fbc)
-    {
+    estimateGamma(double[][][] xi, ForwardBackwardCalculator fbc) {
         double[][] gamma = new double[xi.length + 1][xi[0].length];
 
         for (int t = 0; t < xi.length + 1; t++)
@@ -219,8 +212,7 @@ public class BaumWelchLearner
      *
      * @return The number of iterations performed.
      */
-    public int getNbIterations()
-    {
+    public int getNbIterations() {
         return nbIterations;
     }
 
@@ -230,8 +222,7 @@ public class BaumWelchLearner
      *
      * @param nb The (positive) number of iterations to perform.
      */
-    public void setNbIterations(int nb)
-    {
+    public void setNbIterations(int nb) {
         if (nb < 0)
             throw new IllegalArgumentException("Positive number expected");
 

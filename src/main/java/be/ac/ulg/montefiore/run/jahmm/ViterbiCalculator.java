@@ -13,8 +13,7 @@ import java.util.List;
  * This class can be used to compute the most probable state sequence matching
  * a given observation sequence (given an HMM).
  */
-public class ViterbiCalculator
-{
+public class ViterbiCalculator {
     /*
      * The psy and delta values, as described in Rabiner and Juand classical
      * papers.
@@ -29,12 +28,11 @@ public class ViterbiCalculator
      * Computes the most likely state sequence matching an observation
      * sequence given an HMM.
      *
-     * @param hmm A Hidden Markov Model;
+     * @param hmm  A Hidden Markov Model;
      * @param oseq An observations sequence.
      */
     public <O extends Observation>
-    ViterbiCalculator(List<? extends O> oseq, Hmm<O> hmm)
-    {
+    ViterbiCalculator(List<? extends O> oseq, Hmm<O> hmm) {
         if (oseq.isEmpty())
             throw new IllegalArgumentException("Invalid empty sequence");
 
@@ -44,7 +42,7 @@ public class ViterbiCalculator
 
         for (int i = 0; i < hmm.nbStates(); i++) {
             delta[0][i] = -Math.log(hmm.getPi(i)) -
-            Math.log(hmm.getOpdf(i).probability(oseq.get(0)));
+                    Math.log(hmm.getOpdf(i).probability(oseq.get(0)));
             psy[0][i] = 0;
         }
 
@@ -64,7 +62,7 @@ public class ViterbiCalculator
 
         lnProbability = Double.MAX_VALUE;
         for (int i = 0; i < hmm.nbStates(); i++) {
-            double thisProbability = delta[oseq.size()-1][i];
+            double thisProbability = delta[oseq.size() - 1][i];
 
             if (lnProbability > thisProbability) {
                 lnProbability = thisProbability;
@@ -74,7 +72,7 @@ public class ViterbiCalculator
         lnProbability = -lnProbability;
 
         for (int t2 = oseq.size() - 2; t2 >= 0; t2--)
-            stateSequence[t2] = psy[t2+1][stateSequence[t2+1]];
+            stateSequence[t2] = psy[t2 + 1][stateSequence[t2 + 1]];
     }
 
 
@@ -82,13 +80,12 @@ public class ViterbiCalculator
      * Computes delta and psy[t][j] (t > 0)
      */
     private <O extends Observation> void
-    computeStep(Hmm<O> hmm, O o, int t, int j)
-    {
+    computeStep(Hmm<O> hmm, O o, int t, int j) {
         double minDelta = Double.MAX_VALUE;
         int min_psy = 0;
 
         for (int i = 0; i < hmm.nbStates(); i++) {
-            double thisDelta = delta[t-1][i] - Math.log(hmm.getAij(i, j));
+            double thisDelta = delta[t - 1][i] - Math.log(hmm.getAij(i, j));
 
             if (minDelta > thisDelta) {
                 minDelta = thisDelta;
@@ -107,12 +104,11 @@ public class ViterbiCalculator
      * HMM.
      *
      * @return <code>ln(P[O,S|H])</code> where <code>O</code> is the given
-     *         observation sequence, <code>H</code> the given HMM and
-     *         <code>S</code> the most likely state sequence of this observation
-     *         sequence given this HMM.
+     * observation sequence, <code>H</code> the given HMM and
+     * <code>S</code> the most likely state sequence of this observation
+     * sequence given this HMM.
      */
-    public double lnProbability()
-    {
+    public double lnProbability() {
         return lnProbability;
     }
 
@@ -122,10 +118,9 @@ public class ViterbiCalculator
      * state sequence.
      *
      * @return The state sequence; the i-th value of the array is the index
-     *         of the i-th state of the state sequence.
+     * of the i-th state of the state sequence.
      */
-    public int[] stateSequence()
-    {
+    public int[] stateSequence() {
         return stateSequence.clone();
     }
 }

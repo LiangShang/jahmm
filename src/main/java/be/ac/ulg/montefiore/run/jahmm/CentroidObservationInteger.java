@@ -13,30 +13,26 @@ import java.util.*;
  * ObservationInteger}.
  */
 public class CentroidObservationInteger
-implements Centroid<ObservationInteger>
-{
+        implements Centroid<ObservationInteger> {
     private double value;
 
 
-    public CentroidObservationInteger(ObservationInteger o)
-    {
+    public CentroidObservationInteger(ObservationInteger o) {
         this.value = o.value;
     }
 
 
     public void reevaluateAdd(ObservationInteger e,
-            List<? extends ObservationInteger> v)
-    {
+                              List<? extends ObservationInteger> v) {
         value = ((value * (double) v.size()) +
-                ((double) (e.value))) / (v.size()+1.);
+                ((double) (e.value))) / (v.size() + 1.);
     }
 
 
     public void reevaluateRemove(ObservationInteger e,
-            List<? extends ObservationInteger> v)
-    {
+                                 List<? extends ObservationInteger> v) {
         value = ((value * (double) v.size()) -
-                ((double) e.value)) / (v.size()-1.);
+                ((double) e.value)) / (v.size() - 1.);
     }
 
 
@@ -49,8 +45,7 @@ implements Centroid<ObservationInteger>
      *          ObservationInteger}.
      * @return The distance to the centroid.
      */
-    public double distance(ObservationInteger e)
-    {
-        return Math.abs(e.value-value);
+    public double distance(ObservationInteger e) {
+        return Math.abs(e.value - value);
     }
 }

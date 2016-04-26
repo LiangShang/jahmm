@@ -13,28 +13,24 @@ import java.text.NumberFormat;
  * set implemented as an enumeration.
  */
 public class ObservationDiscrete<E extends Enum<E>>
-extends Observation
-{
+        extends Observation {
     /**
      * This observation value.
      */
     public final E value;
 
 
-    public ObservationDiscrete(E value)
-    {
+    public ObservationDiscrete(E value) {
         this.value = value;
     }
 
 
-    public String toString()
-    {
+    public String toString() {
         return value.toString();
     }
 
 
-    public String toString(NumberFormat nf)
-    {
+    public String toString(NumberFormat nf) {
         return toString();
     }
 }

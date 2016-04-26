@@ -24,22 +24,14 @@ import be.ac.ulg.montefiore.run.jahmm.OpdfInteger;
  * <code>new OpdfInteger(new double[] { .2 .3 .5 })</code>.
  */
 public class OpdfIntegerReader
-extends OpdfReader<OpdfInteger>
-{
+        extends OpdfReader<OpdfInteger> {
     private final int nbEntries; // < 0 if number of entries is not checked.
-
-
-    String keyword()
-    {
-        return "IntegerOPDF";
-    }
 
 
     /**
      * Implements a reader of distributions over integer observations.
      */
-    public OpdfIntegerReader()
-    {
+    public OpdfIntegerReader() {
         nbEntries = -1;
     }
 
@@ -48,14 +40,12 @@ extends OpdfReader<OpdfInteger>
      * Implements a reader of distributions over integer observations. The
      * number of probabilities given is checked.
      *
-     * @param nbEntries
-     *            The number of entries that should be found (<i>i.e.</i> a
-     *            {@link FileFormatException} is triggered if the read
-     *            <code>opdf</code> is not such as
-     *            <code>opdf.nbEntries() == nbEntries</code> ).
+     * @param nbEntries The number of entries that should be found (<i>i.e.</i> a
+     *                  {@link FileFormatException} is triggered if the read
+     *                  <code>opdf</code> is not such as
+     *                  <code>opdf.nbEntries() == nbEntries</code> ).
      */
-    public OpdfIntegerReader(int nbEntries)
-    {
+    public OpdfIntegerReader(int nbEntries) {
         if (nbEntries <= 0)
             throw new IllegalArgumentException("Argument must be strictly "
                     + "positive");
@@ -63,10 +53,12 @@ extends OpdfReader<OpdfInteger>
         this.nbEntries = nbEntries;
     }
 
+    String keyword() {
+        return "IntegerOPDF";
+    }
 
     public OpdfInteger read(StreamTokenizer st)
-    throws IOException,    FileFormatException
-    {
+            throws IOException, FileFormatException {
         HmmReader.readWords(st, keyword());
 
         double[] probabilities = OpdfReader.read(st, -1);

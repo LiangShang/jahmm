@@ -5,20 +5,19 @@
 
 package be.ac.ulg.montefiore.run.jahmm;
 
+import be.ac.ulg.montefiore.run.distributions.MultiGaussianDistribution;
+
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collection;
-
-import be.ac.ulg.montefiore.run.distributions.MultiGaussianDistribution;
-
 
 
 /**
  * This class represents a multivariate gaussian distribution function.
  */
 public class OpdfMultiGaussian
-implements Opdf<ObservationVector>
-{
+        implements Opdf<ObservationVector> {
+    private static final long serialVersionUID = 1L;
     private MultiGaussianDistribution distribution;
 
 
@@ -28,8 +27,7 @@ implements Opdf<ObservationVector>
      *
      * @param dimension The dimension of the vectors.
      */
-    public OpdfMultiGaussian(int dimension)
-    {
+    public OpdfMultiGaussian(int dimension) {
         distribution = new MultiGaussianDistribution(dimension);
     }
 
@@ -38,11 +36,10 @@ implements Opdf<ObservationVector>
      * Builds a new gaussian probability distribution with a given mean and
      * covariance matrix.
      *
-     * @param mean The distribution's mean.
+     * @param mean       The distribution's mean.
      * @param covariance The distribution's covariance matrix.
      */
-    public OpdfMultiGaussian(double[] mean, double[][] covariance)
-    {
+    public OpdfMultiGaussian(double[] mean, double[][] covariance) {
         if (covariance.length == 0 || mean.length != covariance.length ||
                 covariance.length != covariance[0].length)
             throw new IllegalArgumentException();
@@ -50,64 +47,50 @@ implements Opdf<ObservationVector>
         distribution = new MultiGaussianDistribution(mean, covariance);
     }
 
-
     /**
      * Returns (a copy of) this distribution's mean vector.
      *
      * @return The mean vector.
      */
-    public double[] mean()
-    {
+    public double[] mean() {
         return distribution.mean();
     }
-
 
     /**
      * Returns (a copy of) this distribution's covariance matrix.
      *
      * @return The covariance matrix.
      */
-    public double[][] covariance()
-    {
+    public double[][] covariance() {
         return distribution.covariance();
     }
-
 
     /**
      * Returns the dimension of the vectors handled by this distribution.
      *
      * @return The dimension of the vectors handled by this distribution.
      */
-    public int dimension()
-    {
+    public int dimension() {
         return distribution.dimension();
     }
 
-
-    public double probability(ObservationVector o)
-    {
+    public double probability(ObservationVector o) {
         if (o.dimension() != distribution.dimension())
             throw new IllegalArgumentException("Vector has a wrong " +
-            "dimension");
+                    "dimension");
 
         return distribution.probability(o.value);
     }
 
-
-    public ObservationVector generate()
-    {
+    public ObservationVector generate() {
         return new ObservationVector(distribution.generate());
     }
 
-
-    public void fit(ObservationVector... oa)
-    {
+    public void fit(ObservationVector... oa) {
         fit(Arrays.asList(oa));
     }
 
-
-    public void fit(Collection<? extends ObservationVector> co)
-    {
+    public void fit(Collection<? extends ObservationVector> co) {
         if (co.isEmpty())
             throw new IllegalArgumentException("Empty observation set");
 
@@ -117,16 +100,12 @@ implements Opdf<ObservationVector>
         fit(co, weights);
     }
 
-
-    public void fit(ObservationVector[] o, double[] weights)
-    {
+    public void fit(ObservationVector[] o, double[] weights) {
         fit(Arrays.asList(o), weights);
     }
 
-
     public void fit(Collection<? extends ObservationVector> co,
-            double[] weights)
-    {
+                    double[] weights) {
         if (co.isEmpty() || co.size() != weights.length)
             throw new IllegalArgumentException();
 
@@ -159,25 +138,19 @@ implements Opdf<ObservationVector>
         distribution = new MultiGaussianDistribution(mean, covariance);
     }
 
-
-    public OpdfMultiGaussian clone()
-    {
+    public OpdfMultiGaussian clone() {
         try {
             return (OpdfMultiGaussian) super.clone();
-        } catch(CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
     }
 
-
-    public String toString()
-    {
+    public String toString() {
         return toString(NumberFormat.getInstance());
     }
 
-
-    public String toString(NumberFormat numberFormat)
-    {
+    public String toString(NumberFormat numberFormat) {
         String s = "Multi-variate Gaussian distribution --- Mean: [ ";
         double[] mean = distribution.mean();
 
@@ -186,7 +159,4 @@ implements Opdf<ObservationVector>
 
         return s + "]";
     }
-
-
-    private static final long serialVersionUID = 1L;
 }

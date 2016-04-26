@@ -18,12 +18,10 @@ import be.ac.ulg.montefiore.run.jahmm.toolbox.MarkovGenerator;
  * Generates observation sequences from a HMM and write it to file.
  */
 class GenerateActionHandler
-extends ActionHandler
-{
+        extends ActionHandler {
     public void act()
-    throws FileNotFoundException, IOException, FileFormatException,
-    AbnormalTerminationException
-    {
+            throws FileNotFoundException, IOException, FileFormatException,
+            AbnormalTerminationException {
         EnumSet<Arguments> args = EnumSet.of(
                 Arguments.OPDF,
                 Arguments.OUT_SEQS,
@@ -43,9 +41,8 @@ extends ActionHandler
 
     private <O extends Observation & CentroidFactory<O>> void
     write(Reader hmmFileReader, Writer seqsFileWriter,
-            RelatedObjs<O> relatedObjs)
-    throws IOException, FileFormatException
-    {
+          RelatedObjs<O> relatedObjs)
+            throws IOException, FileFormatException {
         ObservationWriter<O> obsWriter = relatedObjs.observationWriter();
         OpdfReader<? extends Opdf<O>> opdfReader = relatedObjs.opdfReader();
         Hmm<O> hmm = HmmReader.read(hmmFileReader, opdfReader);

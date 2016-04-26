@@ -19,12 +19,10 @@ import be.ac.ulg.montefiore.run.jahmm.learn.KMeansLearner;
  * Applies the k-means learning algorithm.
  */
 class KMeansActionHandler
-extends ActionHandler
-{
+        extends ActionHandler {
     public void act()
-    throws FileNotFoundException, IOException, FileFormatException,
-    AbnormalTerminationException
-    {
+            throws FileNotFoundException, IOException, FileFormatException,
+            AbnormalTerminationException {
         EnumSet<Arguments> args = EnumSet.of(
                 Arguments.OPDF,
                 Arguments.NB_STATES,
@@ -46,9 +44,8 @@ extends ActionHandler
 
     private <O extends Observation & CentroidFactory<O>> void
     learn(int nbStates, RelatedObjs<O> relatedObjs, Reader reader,
-            Writer writer)
-    throws IOException, FileFormatException
-    {
+          Writer writer)
+            throws IOException, FileFormatException {
         OpdfFactory<? extends Opdf<O>> opdfFactory = relatedObjs.opdfFactory();
         List<List<O>> seqs = relatedObjs.readSequences(reader);
         OpdfWriter<? extends Opdf<O>> opdfWriter = relatedObjs.opdfWriter();

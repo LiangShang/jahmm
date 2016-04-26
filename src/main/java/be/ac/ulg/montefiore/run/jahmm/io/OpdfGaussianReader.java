@@ -24,15 +24,13 @@ import be.ac.ulg.montefiore.run.jahmm.OpdfGaussian;
  * equivalent to <code>new OpdfGaussian(.2, .3)</code>.
  */
 public class OpdfGaussianReader
-extends OpdfReader<OpdfGaussian>
-{
-    String keyword()
-    {
+        extends OpdfReader<OpdfGaussian> {
+    String keyword() {
         return "GaussianOPDF";
     }
 
     public OpdfGaussian read(StreamTokenizer st)
-    throws IOException,    FileFormatException {
+            throws IOException, FileFormatException {
         HmmReader.readWords(st, keyword());
 
         double[] meanVariance = OpdfReader.read(st, 2);

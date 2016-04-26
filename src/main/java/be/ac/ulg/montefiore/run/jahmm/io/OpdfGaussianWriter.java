@@ -16,11 +16,9 @@ import be.ac.ulg.montefiore.run.jahmm.OpdfGaussian;
  * with the {@link OpdfGaussianReader} class.
  */
 public class OpdfGaussianWriter
-extends OpdfWriter<OpdfGaussian>
-{
+        extends OpdfWriter<OpdfGaussian> {
     public void write(Writer writer, OpdfGaussian opdf)
-    throws IOException
-    {
+            throws IOException {
         String s = "GaussianOPDF [";
 
         s += opdf.mean() + " " + opdf.variance();

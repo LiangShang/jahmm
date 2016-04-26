@@ -12,15 +12,13 @@ import be.ac.ulg.montefiore.run.jahmm.apps.cli.AbnormalTerminationException;
 import be.ac.ulg.montefiore.run.jahmm.apps.cli.Cli;
 
 
-public class CliTest extends TestCase
-{
+public class CliTest extends TestCase {
     private InputStream origIn;
     private PrintStream origOut;
     private PrintStream origErr;
 
 
-    protected void setUp()
-    {
+    protected void setUp() {
         origIn = System.in;
         origOut = System.out;
         origErr = System.err;
@@ -28,8 +26,7 @@ public class CliTest extends TestCase
 
 
     public void testCli()
-    throws IOException
-    {
+            throws IOException {
         ByteArrayOutputStream err = new ByteArrayOutputStream();
         System.setErr(new PrintStream(err));
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -49,9 +46,8 @@ public class CliTest extends TestCase
             System.setIn(in);
             print();
             flush(out, err);
-        }
-        catch(AbnormalTerminationException e) {
-             throw new AssertionError("Unexpected exception: " + e);
+        } catch (AbnormalTerminationException e) {
+            throw new AssertionError("Unexpected exception: " + e);
         }
 
         System.setOut(origOut);
@@ -60,10 +56,9 @@ public class CliTest extends TestCase
     }
 
 
-    protected void flush(ByteArrayOutputStream out, ByteArrayOutputStream err)
-    {
+    protected void flush(ByteArrayOutputStream out, ByteArrayOutputStream err) {
         assertEquals("Something has been written on the \"standard\"" +
-                " error stream ('" + err.toString() + "')",
+                        " error stream ('" + err.toString() + "')",
                 err.toString().length(), 0);
 
         out.reset();
@@ -72,22 +67,19 @@ public class CliTest extends TestCase
 
 
     protected void help()
-    throws IOException, AbnormalTerminationException
-    {
+            throws IOException, AbnormalTerminationException {
         Cli.run("-help");
     }
 
 
     protected void create()
-    throws IOException, AbnormalTerminationException
-    {
+            throws IOException, AbnormalTerminationException {
         Cli.run("create", "-opdf", "integer", "-r", "4", "-n", "3", "-o", "-");
     }
 
 
     protected void print()
-    throws IOException, AbnormalTerminationException
-    {
+            throws IOException, AbnormalTerminationException {
         Cli.run("print", "-i", "-");
     }
 }

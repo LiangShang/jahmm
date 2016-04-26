@@ -19,87 +19,17 @@ import java.util.*;
  * In order to get the theoretical complexity, the list of elements to be
  * clustered must be accessible in O(1).
  */
-public class KMeansCalculator<K extends CentroidFactory<? super K>>
-{
+public class KMeansCalculator<K extends CentroidFactory<? super K>> {
     private ArrayList<Cluster<K>> clusters;
-
-
-    /**
-     * This class represents a cluster of elements.
-     */
-    class Cluster<L extends CentroidFactory<? super L>>
-    {
-        private List<L> elements;
-        private Centroid<? super L> centroid;
-
-
-        /**
-         * Creates a new empty cluster.
-         */
-        public Cluster()
-        {
-            elements = new ArrayList<L>();
-            centroid = null;
-        }
-
-
-        /**
-         * Creates a new cluster composed of one element.
-         *
-         * @param element The element that compose the new cluster.
-         */
-        public Cluster(L e)
-        {
-            elements = new ArrayList<L>();
-            elements.add(e);
-            centroid = e.factor();
-        }
-
-
-        /**
-         * Returns all the elements of this cluster.
-         *
-         * @return The elements of this cluster.
-         */
-        public List<L> elements()
-        {
-            return elements;
-        }
-
-
-        public void add(L e)
-        {
-            if (centroid == null)
-                centroid = e.factor();
-            else
-                centroid.reevaluateAdd(e, elements);
-
-            elements.add(e);
-        }
-
-
-        public void remove(int i)
-        {
-            centroid.reevaluateRemove(elements.get(i), elements);
-            elements.remove(i);
-        }
-
-
-        public Centroid<? super L> centroid()
-        {
-            return centroid;
-        }
-    }
 
 
     /**
      * This class divides a set of elements in a given number of clusters.
      *
-     * @param k The number of clusters to get.
+     * @param k        The number of clusters to get.
      * @param elements The elements to divide in clusters.
      */
-    public KMeansCalculator(int k, List<? extends K> elements)
-    {
+    public KMeansCalculator(int k, List<? extends K> elements) {
         if (k <= 0)
             throw new IllegalArgumentException("Illegal number of clusters");
 
@@ -110,25 +40,25 @@ public class KMeansCalculator<K extends CentroidFactory<? super K>>
         int elementNb = 0;
 
         elLoop:
-            for (; elementNb < elements.size() && clusterNb < k &&
-            elements.size() - elementNb > k - clusterNb; elementNb++) {
-                K element = elements.get(elementNb);
+        for (; elementNb < elements.size() && clusterNb < k &&
+                elements.size() - elementNb > k - clusterNb; elementNb++) {
+            K element = elements.get(elementNb);
 
-                for (int i = 0; i < clusterNb; i++) {
-                    Cluster<K> cluster = clusters.get(i);
+            for (int i = 0; i < clusterNb; i++) {
+                Cluster<K> cluster = clusters.get(i);
 
-                    if (cluster.centroid().distance(element) == 0.) {
-                        cluster.add(element);
-                        continue elLoop;
-                    }
+                if (cluster.centroid().distance(element) == 0.) {
+                    cluster.add(element);
+                    continue elLoop;
                 }
-
-                clusters.add(new Cluster<K>(elements.get(elementNb)));
-                clusterNb++;
             }
 
+            clusters.add(new Cluster<K>(elements.get(elementNb)));
+            clusterNb++;
+        }
+
         for (; clusterNb < k && elementNb < elements.size();
-        elementNb++, clusterNb++)
+             elementNb++, clusterNb++)
             clusters.add(new Cluster<K>(elements.get(elementNb)));
 
         for (; clusterNb < k; clusterNb++)
@@ -167,9 +97,7 @@ public class KMeansCalculator<K extends CentroidFactory<? super K>>
         } while (!terminated);
     }
 
-
-    private Cluster<K> nearestCluster(K element)
-    {
+    private Cluster<K> nearestCluster(K element) {
         double distance = Double.MAX_VALUE;
         Cluster<K> cluster = null;
 
@@ -185,7 +113,6 @@ public class KMeansCalculator<K extends CentroidFactory<? super K>>
         return cluster;
     }
 
-
     /**
      * Returns the elements of one of the clusters.
      *
@@ -194,19 +121,76 @@ public class KMeansCalculator<K extends CentroidFactory<? super K>>
      *              given by {@link #nbClusters nbClusters} <code>- 1</code>.
      * @return A vector holding the elements of the requested cluster.
      */
-    public Collection<K> cluster(int index)
-    {
+    public Collection<K> cluster(int index) {
         return clusters.get(index).elements();
     }
-
 
     /**
      * Returns the number of clusters.
      *
      * @return The number of clusters in the cluster set computed by this class.
      */
-    public int nbClusters()
-    {
+    public int nbClusters() {
         return clusters.size();
+    }
+
+    /**
+     * This class represents a cluster of elements.
+     */
+    class Cluster<L extends CentroidFactory<? super L>> {
+        private List<L> elements;
+        private Centroid<? super L> centroid;
+
+
+        /**
+         * Creates a new empty cluster.
+         */
+        public Cluster() {
+            elements = new ArrayList<L>();
+            centroid = null;
+        }
+
+
+        /**
+         * Creates a new cluster composed of one element.
+         *
+         * @param element The element that compose the new cluster.
+         */
+        public Cluster(L e) {
+            elements = new ArrayList<L>();
+            elements.add(e);
+            centroid = e.factor();
+        }
+
+
+        /**
+         * Returns all the elements of this cluster.
+         *
+         * @return The elements of this cluster.
+         */
+        public List<L> elements() {
+            return elements;
+        }
+
+
+        public void add(L e) {
+            if (centroid == null)
+                centroid = e.factor();
+            else
+                centroid.reevaluateAdd(e, elements);
+
+            elements.add(e);
+        }
+
+
+        public void remove(int i) {
+            centroid.reevaluateRemove(elements.get(i), elements);
+            elements.remove(i);
+        }
+
+
+        public Centroid<? super L> centroid() {
+            return centroid;
+        }
     }
 }

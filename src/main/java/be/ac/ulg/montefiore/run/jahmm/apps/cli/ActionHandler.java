@@ -11,8 +11,19 @@ import java.io.IOException;
 
 import be.ac.ulg.montefiore.run.jahmm.io.FileFormatException;
 
-abstract class ActionHandler
-{
+abstract class ActionHandler {
+    public void parseArguments(String args[])
+            throws WrongArgumentsException {
+        CommandLineArguments.parse(args);
+    }
+
+    ;
+
+    abstract public void act()
+            throws FileNotFoundException, IOException, FileFormatException,
+            AbnormalTerminationException;
+
+
     public static enum Actions {
         HELP("-help", HelpActionHandler.class),
         PRINT("print", PrintActionHandler.class),
@@ -37,17 +48,5 @@ abstract class ActionHandler
         public Class<? extends ActionHandler> handler() {
             return handler;
         }
-    };
-
-
-    public void parseArguments(String args[])
-    throws WrongArgumentsException
-    {
-        CommandLineArguments.parse(args);
     }
-
-
-    abstract public void act()
-    throws FileNotFoundException, IOException, FileFormatException,
-    AbnormalTerminationException;
 }

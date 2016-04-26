@@ -13,8 +13,7 @@ import java.util.*;
  * ObservationVector}.
  */
 public class CentroidObservationVector
-implements Centroid<ObservationVector>
-{
+        implements Centroid<ObservationVector> {
     private ObservationVector value;
 
 
@@ -24,31 +23,28 @@ implements Centroid<ObservationVector>
      *
      * @param o The initial value of the new centroid.
      */
-    public CentroidObservationVector(ObservationVector o)
-    {
+    public CentroidObservationVector(ObservationVector o) {
         this.value = (ObservationVector) o.clone();
     }
 
 
     public void reevaluateAdd(ObservationVector e,
-            List<? extends ObservationVector> v)
-    {
+                              List<? extends ObservationVector> v) {
         double[] evalues = e.value;
 
         for (int i = 0; i < value.dimension(); i++)
             value.value[i] =
-                ((value.value[i] * v.size()) + evalues[i]) / (v.size()+1);
+                    ((value.value[i] * v.size()) + evalues[i]) / (v.size() + 1);
     }
 
 
     public void reevaluateRemove(ObservationVector e,
-            List<? extends ObservationVector> v)
-    {
+                                 List<? extends ObservationVector> v) {
         double[] evalues = e.value;
 
         for (int i = 0; i < value.dimension(); i++)
             value.value[i] =
-                ((value.value[i] * v.size()) - evalues[i]) / (v.size()-1);
+                    ((value.value[i] * v.size()) - evalues[i]) / (v.size() - 1);
     }
 
 
@@ -61,8 +57,7 @@ implements Centroid<ObservationVector>
      *          centroid.
      * @return The distance between <code>element</code> and this centroid.
      */
-    public double distance(ObservationVector e)
-    {
+    public double distance(ObservationVector e) {
         ObservationVector diff = value.minus(e);
         double sum = 0.;
 

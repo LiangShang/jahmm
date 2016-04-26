@@ -28,16 +28,14 @@ import be.ac.ulg.montefiore.run.jahmm.ObservationVector;
  * <code>new ObservationVector(new double[] {76., 45., -2.23});</code>
  */
 public class ObservationVectorReader
-extends ObservationReader<ObservationVector>
-{
+        extends ObservationReader<ObservationVector> {
     private int dimension;
 
 
     /**
      * Constructs a reader of {@link ObservationVector ObservationVector}.
      */
-    public ObservationVectorReader()
-    {
+    public ObservationVectorReader() {
         dimension = -1;
     }
 
@@ -48,11 +46,10 @@ extends ObservationReader<ObservationVector>
      *
      * @param dimension The dimension of each observation.
      */
-    public ObservationVectorReader(int dimension)
-    {
+    public ObservationVectorReader(int dimension) {
         if (dimension <= 0)
             throw new IllegalArgumentException("Argument must be strictly " +
-            "positive");
+                    "positive");
 
         this.dimension = dimension;
     }
@@ -65,19 +62,18 @@ extends ObservationReader<ObservationVector>
      *
      * @param st A stream tokenizer.
      * @return An {@link be.ac.ulg.montefiore.run.jahmm.ObservationInteger
-     *         ObservationInteger}.
+     * ObservationInteger}.
      */
     public ObservationVector read(StreamTokenizer st)
-    throws IOException, FileFormatException
-    {
+            throws IOException, FileFormatException {
         if (st.nextToken() != (int) '[')
             throw new FileFormatException(st.lineno(), "'[' expected");
 
         List<Double> values = new ArrayList<Double>();
 
         loop:
-            while(true)
-                switch (st.nextToken()) {
+        while (true)
+            switch (st.nextToken()) {
                 case StreamTokenizer.TT_NUMBER:
                     values.add(new Double(st.nval));
                     break;
@@ -91,7 +87,7 @@ extends ObservationReader<ObservationVector>
                 default:
                     throw new FileFormatException(st.lineno(),
                             "Number or ']' expected");
-                }
+            }
 
         if (st.nextToken() != (int) ';')
             throw new FileFormatException(st.lineno(), "';' expected");
@@ -99,7 +95,7 @@ extends ObservationReader<ObservationVector>
         if (dimension > 0 && values.size() != dimension)
             throw new FileFormatException(st.lineno(),
                     "Bad observation: wrong dimension (" + values.size() +
-                    " instead of " + dimension +")");
+                            " instead of " + dimension + ")");
 
         double[] valuesArray = new double[values.size()];
         for (int i = 0; i < values.size(); i++)

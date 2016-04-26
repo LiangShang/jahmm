@@ -20,8 +20,7 @@ import be.ac.ulg.montefiore.run.jahmm.*;
  * The command <tt>dot -Tps -o &lt;outputfile&gt; &lt;inputfile&gt;</tt>
  * should produce a Postscript file describing an HMM.
  */
-class HmmDrawerDot<H extends Hmm<?>>
-{
+class HmmDrawerDot<H extends Hmm<?>> {
     protected double minimumAij = 0.01;
     protected double minimumPi = 0.01;
     protected NumberFormat probabilityFormat;
@@ -30,15 +29,13 @@ class HmmDrawerDot<H extends Hmm<?>>
     /**
      * This class converts an HMM to a dot file.
      */
-    public HmmDrawerDot()
-    {
+    public HmmDrawerDot() {
         probabilityFormat = NumberFormat.getInstance();
         probabilityFormat.setMaximumFractionDigits(2);
     }
 
 
-    protected String convert(H hmm)
-    {
+    protected String convert(H hmm) {
         String s = beginning();
 
         s += transitions(hmm);
@@ -48,28 +45,25 @@ class HmmDrawerDot<H extends Hmm<?>>
     }
 
 
-    protected String beginning()
-    {
+    protected String beginning() {
         return "digraph G {\n";
     }
 
 
-    protected String transitions(Hmm<?> hmm)
-    {
+    protected String transitions(Hmm<?> hmm) {
         String s = "";
 
         for (int i = 0; i < hmm.nbStates(); i++)
             for (int j = 0; j < hmm.nbStates(); j++)
                 if (hmm.getAij(i, j) >= minimumAij)
                     s += "\t" + i + " -> " + j + " [label=" +
-                    probabilityFormat.format(hmm.getAij(i, j)) + "];\n";
+                            probabilityFormat.format(hmm.getAij(i, j)) + "];\n";
 
         return s;
     }
 
 
-    protected String states(H hmm)
-    {
+    protected String states(H hmm) {
         String s = "";
 
         for (int i = 0; i < hmm.nbStates(); i++) {
@@ -77,11 +71,11 @@ class HmmDrawerDot<H extends Hmm<?>>
 
             if (hmm.getPi(i) >= minimumPi) {
                 s += "shape=doublecircle, label=\"" + i +
-                " - Pi= " + probabilityFormat.format(hmm.getPi(i)) + " - " +
-                opdfLabel(hmm, i) + "\"";
+                        " - Pi= " + probabilityFormat.format(hmm.getPi(i)) + " - " +
+                        opdfLabel(hmm, i) + "\"";
             } else {
                 s += "shape=circle, label=\"" + i + " - " +
-                opdfLabel(hmm, i) + "\"";
+                        opdfLabel(hmm, i) + "\"";
             }
 
             s += "];\n";
@@ -91,14 +85,12 @@ class HmmDrawerDot<H extends Hmm<?>>
     }
 
 
-    protected String opdfLabel(H hmm, int stateNb)
-    {
+    protected String opdfLabel(H hmm, int stateNb) {
         return "[ " + hmm.getOpdf(stateNb).toString() + " ]";
     }
 
 
-    protected String ending()
-    {
+    protected String ending() {
         return "}\n";
     }
 
@@ -106,11 +98,10 @@ class HmmDrawerDot<H extends Hmm<?>>
     /**
      * Writes a dot file depicting the given HMM.
      *
-     * @param hmm The HMM to depict.
+     * @param hmm      The HMM to depict.
      * @param filename The resulting 'dot' file filename.
      */
-    public void write(H hmm, String filename) throws IOException
-    {
+    public void write(H hmm, String filename) throws IOException {
         FileWriter fw = new FileWriter(filename);
         fw.write(convert(hmm));
         fw.close();

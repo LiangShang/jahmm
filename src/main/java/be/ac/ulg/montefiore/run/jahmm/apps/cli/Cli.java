@@ -13,8 +13,7 @@ import be.ac.ulg.montefiore.run.jahmm.io.FileFormatException;
 /**
  * This class implements a command line interface for the Jahmm library.
  */
-public class Cli
-{
+public class Cli {
     public final static String CHARSET = "ISO-8859-1";
 
     /**
@@ -23,12 +22,10 @@ public class Cli
      * @param args Command line arguments.
      */
     public static void main(String... args)
-    throws IOException
-    {
+            throws IOException {
         try {
             System.exit(run(args));
-        }
-        catch (AbnormalTerminationException e) {
+        } catch (AbnormalTerminationException e) {
             System.err.println(e);
             System.exit(-1);
         }
@@ -36,20 +33,19 @@ public class Cli
 
 
     static public int run(String... args)
-    throws IOException, AbnormalTerminationException
-    {
+            throws IOException, AbnormalTerminationException {
         // Allows this method to be called more than once
         CommandLineArguments.reset();
 
         ActionHandler.Actions action = CommandLineArguments.parseAction(args);
-        if (action  == null)
+        if (action == null)
             throw new WrongArgumentsException("Valid action required");
 
         ActionHandler actionHandler = null;
 
         try {
             actionHandler = action.handler().newInstance();
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new InternalError(e.toString());
         }
 
@@ -57,10 +53,10 @@ public class Cli
 
         try {
             actionHandler.act();
-        } catch(FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.err.println(e);
             return -1;
-        } catch(FileFormatException e) {
+        } catch (FileFormatException e) {
             System.err.println(e);
             return -1;
         }

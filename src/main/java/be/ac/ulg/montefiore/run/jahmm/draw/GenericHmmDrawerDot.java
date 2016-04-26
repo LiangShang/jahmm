@@ -17,6 +17,5 @@ import be.ac.ulg.montefiore.run.jahmm.*;
  * should produce a Postscript file describing an HMM.
  */
 public class GenericHmmDrawerDot
-extends HmmDrawerDot<Hmm<?>>
-{
+        extends HmmDrawerDot<Hmm<?>> {
 }

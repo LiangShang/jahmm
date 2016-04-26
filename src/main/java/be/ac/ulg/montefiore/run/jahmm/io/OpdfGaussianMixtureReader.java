@@ -29,16 +29,14 @@ import be.ac.ulg.montefiore.run.jahmm.OpdfGaussianMixture;
  * new double[] { .1, .9 }, new double[] { .4, .6 })</code>.
  */
 public class OpdfGaussianMixtureReader
-extends OpdfReader<OpdfGaussianMixture>
-{
-    String keyword()
-    {
+        extends OpdfReader<OpdfGaussianMixture> {
+    String keyword() {
         return "GaussianMixtureOPDF";
     }
 
 
     public OpdfGaussianMixture read(StreamTokenizer st)
-    throws IOException,    FileFormatException {
+            throws IOException, FileFormatException {
         HmmReader.readWords(st, keyword(), "[");
 
         double[] means = OpdfReader.read(st, -1);

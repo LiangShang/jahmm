@@ -11,8 +11,7 @@ package be.ac.ulg.montefiore.run.jahmm;
  * distribution functions.
  */
 public class OpdfDiscreteFactory<E extends Enum<E>>
-implements OpdfFactory<OpdfDiscrete<E>>
-{
+        implements OpdfFactory<OpdfDiscrete<E>> {
     final protected Class<E> valuesClass;
 
 
@@ -20,16 +19,14 @@ implements OpdfFactory<OpdfDiscrete<E>>
      * Creates a factory for {@link OpdfDiscrete OpdfDiscrete} objects.
      *
      * @param valuesClass The class representing the set of values over which
-     *      the generated observation distributions operate.
+     *                    the generated observation distributions operate.
      */
-    public OpdfDiscreteFactory(Class<E> valuesClass)
-    {
+    public OpdfDiscreteFactory(Class<E> valuesClass) {
         this.valuesClass = valuesClass;
     }
 
 
-    public OpdfDiscrete<E> factor()
-    {
+    public OpdfDiscrete<E> factor() {
         return new OpdfDiscrete<E>(valuesClass);
     }
 }

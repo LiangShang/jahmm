@@ -17,11 +17,9 @@ import be.ac.ulg.montefiore.run.jahmm.toolbox.KullbackLeiblerDistanceCalculator;
  * This class implements an action that computes the Kullback-Leibler
  * distance between two HMMs.
  */
-public class KLActionHandler extends ActionHandler
-{
+public class KLActionHandler extends ActionHandler {
     public void act() throws FileNotFoundException, IOException,
-    FileFormatException, AbnormalTerminationException
-    {
+            FileFormatException, AbnormalTerminationException {
         EnumSet<Arguments> args = EnumSet.of(
                 Arguments.OPDF,
                 Arguments.IN_HMM,
@@ -39,13 +37,12 @@ public class KLActionHandler extends ActionHandler
 
     private <O extends Observation & CentroidFactory<O>> void
     distance(RelatedObjs<O> relatedObjs, Reader reader1, Reader reader2)
-    throws IOException, FileFormatException
-    {
+            throws IOException, FileFormatException {
         Hmm<O> hmm1 = HmmReader.read(reader1, relatedObjs.opdfReader());
         Hmm<O> hmm2 = HmmReader.read(reader2, relatedObjs.opdfReader());
 
         KullbackLeiblerDistanceCalculator kl =
-            new KullbackLeiblerDistanceCalculator();
+                new KullbackLeiblerDistanceCalculator();
         System.out.println(kl.distance(hmm1, hmm2));
     }
 }

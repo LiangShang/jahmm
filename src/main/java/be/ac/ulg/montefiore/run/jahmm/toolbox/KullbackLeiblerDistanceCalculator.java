@@ -24,8 +24,7 @@ import be.ac.ulg.montefiore.run.jahmm.*;
  * symetric distance definition, compute
  * <code>(distance(hmm1, hmm2) + distance(hmm2, hmm1)) / 2</code>.
  */
-public class KullbackLeiblerDistanceCalculator
-{
+public class KullbackLeiblerDistanceCalculator {
     private int sequencesLength = 1000;
     private int nbSequences = 10;
 
@@ -39,22 +38,21 @@ public class KullbackLeiblerDistanceCalculator
      *             symetric).
      * @param hmm2 The second HMM against which the distance is computed.
      * @return The distance between <code>hmm1</code> and <code>hmm2</code> with
-     *      regard to <code>hmm1</code>
+     * regard to <code>hmm1</code>
      */
     public <O extends Observation> double
-    distance(Hmm<O> hmm1, Hmm<? super O> hmm2)
-    {
+    distance(Hmm<O> hmm1, Hmm<? super O> hmm2) {
         double distance = 0.;
 
         for (int i = 0; i < nbSequences; i++) {
 
             List<O> oseq = new MarkovGenerator<O>(hmm1).
-            observationSequence(sequencesLength);
+                    observationSequence(sequencesLength);
 
             distance += (new ForwardBackwardScaledCalculator(oseq, hmm1).
                     lnProbability() -
                     new ForwardBackwardScaledCalculator(oseq, hmm2).
-                    lnProbability()) / sequencesLength;
+                            lnProbability()) / sequencesLength;
         }
 
         return distance / nbSequences;
@@ -66,8 +64,7 @@ public class KullbackLeiblerDistanceCalculator
      *
      * @return The number of generated sequences.
      */
-    public int getNbSequences()
-    {
+    public int getNbSequences() {
         return nbSequences;
     }
 
@@ -77,8 +74,7 @@ public class KullbackLeiblerDistanceCalculator
      *
      * @param nb The number of generated sequences.
      */
-    public void setNbSequences(int nb)
-    {
+    public void setNbSequences(int nb) {
         this.nbSequences = nb;
     }
 
@@ -88,8 +84,7 @@ public class KullbackLeiblerDistanceCalculator
      *
      * @return The sequences length.
      */
-    public int getSequencesLength()
-    {
+    public int getSequencesLength() {
         return sequencesLength;
     }
 
@@ -99,8 +94,7 @@ public class KullbackLeiblerDistanceCalculator
      *
      * @param length The sequences length.
      */
-    public void setSequencesLength(int length)
-    {
+    public void setSequencesLength(int length) {
         this.sequencesLength = length;
     }
 }

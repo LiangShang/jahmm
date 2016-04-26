@@ -16,11 +16,9 @@ import be.ac.ulg.montefiore.run.jahmm.ObservationReal;
  * semi-colon.
  */
 public class ObservationRealWriter
-extends ObservationWriter<ObservationReal>
-{
+        extends ObservationWriter<ObservationReal> {
     public void write(ObservationReal observation, Writer writer)
-    throws IOException
-    {
+            throws IOException {
         writer.write(observation.value + "; ");
     }
 }

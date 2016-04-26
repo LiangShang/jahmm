@@ -10,8 +10,8 @@ package be.ac.ulg.montefiore.run.distributions;
  * This class implements an generator of exponentially distributed reals.
  */
 public class ExponentialDistribution
-implements RandomDistribution
-{
+        implements RandomDistribution {
+    private static final long serialVersionUID = 6359607459925864639L;
     private double rate;
 
 
@@ -23,8 +23,7 @@ implements RandomDistribution
      *
      * @param rate The parameter of the distribution.
      */
-    public ExponentialDistribution(double rate)
-    {
+    public ExponentialDistribution(double rate) {
         if (rate <= 0.)
             throw new IllegalArgumentException("Argument must be strictly " +
                     "positive");
@@ -32,29 +31,20 @@ implements RandomDistribution
         this.rate = rate;
     }
 
-
     /**
      * Returns this distribution's rate.
      *
      * @return This distribution's rate.
      */
-    public double rate()
-    {
+    public double rate() {
         return rate;
     }
 
-
-    public double generate()
-    {
+    public double generate() {
         return -Math.log(Math.random()) / rate;
     }
 
-
-    public double probability(double n)
-    {
+    public double probability(double n) {
         return rate * Math.exp(-n * rate);
     }
-
-
-    private static final long serialVersionUID = 6359607459925864639L;
 }

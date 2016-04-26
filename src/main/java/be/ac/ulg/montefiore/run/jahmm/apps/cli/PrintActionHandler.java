@@ -16,13 +16,11 @@ import be.ac.ulg.montefiore.run.jahmm.io.*;
 /**
  * Creates a Hmm and writes it to file.
  */
-class PrintActionHandler extends ActionHandler
-{
+class PrintActionHandler extends ActionHandler {
     @SuppressWarnings({"unchecked"}) // We use a generic reader
     public void act()
-    throws FileFormatException, IOException, FileNotFoundException,
-    AbnormalTerminationException
-    {
+            throws FileFormatException, IOException, FileNotFoundException,
+            AbnormalTerminationException {
         EnumSet<Arguments> args = EnumSet.of(Arguments.IN_HMM);
         CommandLineArguments.checkArgs(args);
 

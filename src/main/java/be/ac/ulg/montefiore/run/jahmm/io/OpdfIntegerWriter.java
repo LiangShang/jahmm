@@ -16,11 +16,9 @@ import be.ac.ulg.montefiore.run.jahmm.OpdfInteger;
  * It is compatible with {@link OpdfIntegerReader}.
  */
 public class OpdfIntegerWriter
-extends OpdfWriter<OpdfInteger>
-{
+        extends OpdfWriter<OpdfInteger> {
     public void write(Writer writer, OpdfInteger opdf)
-    throws IOException
-    {
+            throws IOException {
         String s = "IntegerOPDF [";
 
         for (int i = 0; i < opdf.nbEntries(); i++)

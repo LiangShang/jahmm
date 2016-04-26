@@ -18,11 +18,9 @@ import be.ac.ulg.montefiore.run.jahmm.io.OpdfWriter;
  * Creates a Hmm and write it to file.
  */
 class CreateActionHandler
-extends ActionHandler
-{
+        extends ActionHandler {
     public void act()
-    throws FileNotFoundException, IOException, AbnormalTerminationException
-    {
+            throws FileNotFoundException, IOException, AbnormalTerminationException {
         EnumSet<Arguments> args = EnumSet.of(
                 Arguments.OPDF,
                 Arguments.NB_STATES,
@@ -41,8 +39,7 @@ extends ActionHandler
 
     private <O extends Observation & CentroidFactory<O>> void
     write(Writer outWriter, int nbStates, RelatedObjs<O> relatedObjs)
-    throws IOException
-    {
+            throws IOException {
         OpdfFactory<? extends Opdf<O>> opdfFactory = relatedObjs.opdfFactory();
         OpdfWriter<? extends Opdf<O>> opdfWriter = relatedObjs.opdfWriter();
 

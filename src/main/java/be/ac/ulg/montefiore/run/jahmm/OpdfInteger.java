@@ -15,8 +15,8 @@ import java.util.Collection;
  * observations.
  */
 public class OpdfInteger
-implements Opdf<ObservationInteger>
-{
+        implements Opdf<ObservationInteger> {
+    private static final long serialVersionUID = 1L;
     private double[] probabilities;
 
 
@@ -30,8 +30,7 @@ implements Opdf<ObservationInteger>
      *                  distribution have to be higher or equal than 0 and
      *                  strictly smaller than <code>nbEntries</code>.
      */
-    public OpdfInteger(int nbEntries)
-    {
+    public OpdfInteger(int nbEntries) {
         if (nbEntries <= 0)
             throw new IllegalArgumentException("Argument must be strictly " +
                     "positive");
@@ -51,8 +50,7 @@ implements Opdf<ObservationInteger>
      *                      <code>probabilities[i]</code> is the probability
      *                      of the observation <code>i</code>.
      */
-    public OpdfInteger(double[] probabilities)
-    {
+    public OpdfInteger(double[] probabilities) {
         if (probabilities.length == 0)
             throw new IllegalArgumentException("Invalid empty array");
 
@@ -63,30 +61,24 @@ implements Opdf<ObservationInteger>
                 throw new IllegalArgumentException();
     }
 
-
     /**
      * Returns how many integers are associated to probabilities by this
      * distribution.
      *
      * @return The number of integers are associated to probabilities.
      */
-    public int nbEntries()
-    {
+    public int nbEntries() {
         return probabilities.length;
     }
 
-
-    public double probability(ObservationInteger o)
-    {
-        if (o.value > probabilities.length-1)
+    public double probability(ObservationInteger o) {
+        if (o.value > probabilities.length - 1)
             throw new IllegalArgumentException("Wrong observation value");
 
         return probabilities[o.value];
     }
 
-
-    public ObservationInteger generate()
-    {
+    public ObservationInteger generate() {
         double rand = Math.random();
 
         for (int i = 0; i < probabilities.length - 1; i++)
@@ -96,15 +88,11 @@ implements Opdf<ObservationInteger>
         return new ObservationInteger(probabilities.length - 1);
     }
 
-
-    public void fit(ObservationInteger... oa)
-    {
+    public void fit(ObservationInteger... oa) {
         fit(Arrays.asList(oa));
     }
 
-
-    public void fit(Collection<? extends ObservationInteger> co)
-    {
+    public void fit(Collection<? extends ObservationInteger> co) {
         if (co.isEmpty())
             throw new IllegalArgumentException("Empty observation set");
 
@@ -118,16 +106,12 @@ implements Opdf<ObservationInteger>
             probabilities[i] /= co.size();
     }
 
-
-    public void fit(ObservationInteger[] o, double[] weights)
-    {
+    public void fit(ObservationInteger[] o, double[] weights) {
         fit(Arrays.asList(o), weights);
     }
 
-
     public void fit(Collection<? extends ObservationInteger> co,
-            double[] weights)
-    {
+                    double[] weights) {
         if (co.isEmpty() || co.size() != weights.length)
             throw new IllegalArgumentException();
 
@@ -138,39 +122,30 @@ implements Opdf<ObservationInteger>
             probabilities[o.value] += weights[i++];
     }
 
-
-    public OpdfInteger clone()
-    {
+    public OpdfInteger clone() {
         try {
-            OpdfInteger opdf = (OpdfInteger)super.clone();
-                        opdf.probabilities = probabilities.clone();
+            OpdfInteger opdf = (OpdfInteger) super.clone();
+            opdf.probabilities = probabilities.clone();
             return opdf;
-        } catch(CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
     }
 
-
-    public String toString()
-    {
+    public String toString() {
         return toString(NumberFormat.getInstance());
     }
 
-
-    public String toString(NumberFormat numberFormat)
-    {
+    public String toString(NumberFormat numberFormat) {
         String s = "Integer distribution --- ";
 
-        for (int i = 0; i < nbEntries();) {
+        for (int i = 0; i < nbEntries(); ) {
             ObservationInteger oi = new ObservationInteger(i);
 
             s += numberFormat.format(probability(oi)) +
-            ((++i < nbEntries()) ? " " : "");
+                    ((++i < nbEntries()) ? " " : "");
         }
 
         return s;
     }
-
-
-    private static final long serialVersionUID = 1L;
 }

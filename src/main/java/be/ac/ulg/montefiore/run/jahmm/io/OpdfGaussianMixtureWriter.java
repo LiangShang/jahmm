@@ -16,11 +16,9 @@ import be.ac.ulg.montefiore.run.jahmm.OpdfGaussianMixture;
  * compatible with the {@link OpdfGaussianMixtureReader} class.
  */
 public class OpdfGaussianMixtureWriter
-extends OpdfWriter<OpdfGaussianMixture>
-{
+        extends OpdfWriter<OpdfGaussianMixture> {
     public void write(Writer writer, OpdfGaussianMixture opdf)
-    throws IOException
-    {
+            throws IOException {
         writer.write("GaussianMixtureOPDF [ ");
 
         write(writer, opdf.means());

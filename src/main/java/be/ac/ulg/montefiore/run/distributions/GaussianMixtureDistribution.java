@@ -14,10 +14,9 @@ import java.util.*;
  * @author Jean-Marc Francois (based on code from Benjamin Chung)
  */
 public class GaussianMixtureDistribution
-implements RandomDistribution
-{
+        implements RandomDistribution {
     static private final Random random = new Random();
-
+    private static final long serialVersionUID = 2634624658500627331L;
     private GaussianDistribution[] distributions;
     private double proportions[];
 
@@ -29,8 +28,7 @@ implements RandomDistribution
      *
      * @param nbGaussians The number of distributions composing the mixture.
      */
-    public GaussianMixtureDistribution(int nbGaussians)
-    {
+    public GaussianMixtureDistribution(int nbGaussians) {
         if (nbGaussians <= 0)
             throw new IllegalArgumentException("Argument must be strictly " +
                     "positive");
@@ -56,15 +54,14 @@ implements RandomDistribution
      * values, variances and proportions of each distribution is given as
      * an argument.
      *
-     * @param means The mean values of the Gaussian distributions.
-     * @param variances The variances of the Gaussian distributions.
+     * @param means       The mean values of the Gaussian distributions.
+     * @param variances   The variances of the Gaussian distributions.
      * @param proportions The mixing proportions. This array does not have to
-     *             be normalized, but each element must be positive and the sum
-     *             of its elements must be strictly positive.
+     *                    be normalized, but each element must be positive and the sum
+     *                    of its elements must be strictly positive.
      */
     public GaussianMixtureDistribution(double[] means, double[] variances,
-            double[] proportions)
-    {
+                                       double[] proportions) {
         if (means.length == 0 || means.length != variances.length ||
                 means.length != proportions.length)
             throw new IllegalArgumentException();
@@ -83,28 +80,23 @@ implements RandomDistribution
             this.proportions[i] = proportions[i] / sum;
     }
 
-
     /**
      * Returns the number of Gaussians composing this mixture.
      *
      * @return The number of Gaussians composing this mixture.
      */
-    public int nbGaussians()
-    {
+    public int nbGaussians() {
         return distributions.length;
     }
-
 
     /**
      * Returns the distributions composing this mixture.
      *
      * @return A copy of the distributions array.
      */
-    public GaussianDistribution[] distributions()
-    {
+    public GaussianDistribution[] distributions() {
         return distributions.clone();
     }
-
 
     /**
      * Returns the proportions of the distributions in this mixture.
@@ -112,14 +104,11 @@ implements RandomDistribution
      *
      * @return A copy of the distributions' proportions array.
      */
-    public double[] proportions()
-    {
+    public double[] proportions() {
         return proportions.clone();
     }
 
-
-    public double generate()
-    {
+    public double generate() {
         double r = random.nextDouble();
         double sum = 0.;
 
@@ -133,9 +122,7 @@ implements RandomDistribution
         throw new RuntimeException("Internal error");
     }
 
-
-    public double probability(double n)
-    {
+    public double probability(double n) {
         double sum = 0.;
 
         for (int i = 0; i < distributions.length; i++)
@@ -143,7 +130,4 @@ implements RandomDistribution
 
         return sum;
     }
-
-
-    private static final long serialVersionUID = 2634624658500627331L;
 }

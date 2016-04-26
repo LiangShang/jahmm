@@ -23,12 +23,10 @@ import java.util.List;
  * Applies the Baum-Welch learning algorithm.
  */
 class BWActionHandler
-extends ActionHandler
-{
+        extends ActionHandler {
     public void act()
-    throws IOException, FileFormatException,
-    AbnormalTerminationException
-    {
+            throws IOException, FileFormatException,
+            AbnormalTerminationException {
         EnumSet<Arguments> args = EnumSet.of(
                 Arguments.OPDF,
                 Arguments.OUT_HMM,
@@ -54,10 +52,9 @@ extends ActionHandler
 
     private <O extends Observation & CentroidFactory<O>> void
     learn(RelatedObjs<O> relatedObjs, Reader hmmFileReader,
-            Reader seqFileReader, Writer hmmFileWriter,
-            int nbIterations)
-    throws IOException, FileFormatException
-    {
+          Reader seqFileReader, Writer hmmFileWriter,
+          int nbIterations)
+            throws IOException, FileFormatException {
         List<List<O>> seqs = relatedObjs.readSequences(seqFileReader);
         OpdfReader<? extends Opdf<O>> opdfReader = relatedObjs.opdfReader();
         OpdfWriter<? extends Opdf<O>> opdfWriter = relatedObjs.opdfWriter();
