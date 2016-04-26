@@ -35,27 +35,27 @@ import be.ac.ulg.montefiore.run.jahmm.OpdfMultiGaussian;
 public class OpdfMultiGaussianReader
 extends OpdfReader<OpdfMultiGaussian>
 {
-	String keyword()
-	{
-		return "MultiGaussianOPDF";
-	}
+    String keyword()
+    {
+        return "MultiGaussianOPDF";
+    }
 
-	
-	public OpdfMultiGaussian read(StreamTokenizer st)
-	throws IOException, FileFormatException
-	{
-		HmmReader.readWords(st, keyword(), "[");
-				
-		double[] means = OpdfReader.read(st, -1);		
-		double[][] covariance = new double[means.length][];
-		
-		HmmReader.readWords(st, "[");
-		for (int l = 0; l < covariance.length; l++)
-			covariance[l] = OpdfReader.read(st, means.length);
-		HmmReader.readWords(st, "]");
-	
-		HmmReader.readWords(st, "]");
-	
-		return new OpdfMultiGaussian(means, covariance);
-	}
+
+    public OpdfMultiGaussian read(StreamTokenizer st)
+    throws IOException, FileFormatException
+    {
+        HmmReader.readWords(st, keyword(), "[");
+
+        double[] means = OpdfReader.read(st, -1);
+        double[][] covariance = new double[means.length][];
+
+        HmmReader.readWords(st, "[");
+        for (int l = 0; l < covariance.length; l++)
+            covariance[l] = OpdfReader.read(st, means.length);
+        HmmReader.readWords(st, "]");
+
+        HmmReader.readWords(st, "]");
+
+        return new OpdfMultiGaussian(means, covariance);
+    }
 }

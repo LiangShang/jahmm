@@ -12,9 +12,9 @@ package be.ac.ulg.montefiore.run.jahmm;
  */
 public class OpdfGaussianFactory 
 implements OpdfFactory<OpdfGaussian>
-{	
-	public OpdfGaussian factor() 
-	{
-		return new OpdfGaussian();
-	}
+{
+    public OpdfGaussian factor()
+    {
+        return new OpdfGaussian();
+    }
 }

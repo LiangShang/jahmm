@@ -17,8 +17,8 @@
 
     <developers>
       <developer>
-	<name>Jean-Marc François</name>
-	<timezone>+1</timezone>
+    <name>Jean-Marc François</name>
+    <timezone>+1</timezone>
       </developer>
     </developers>
 
@@ -35,15 +35,15 @@
 
     <build>
       <plugins>
-	<plugin>
+    <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>2.0.2</version>
           <configuration>
             <source>1.5</source>
             <target>1.5</target>
-	  </configuration>
-	</plugin>
+      </configuration>
+    </plugin>
       </plugins>
 
       <!-- deploy to googlecode -->
@@ -59,69 +59,69 @@
 
     <profiles>
       <profile>
-	<id>release</id>
-	<build>
+    <id>release</id>
+    <build>
           <plugins>
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-javadoc-plugin</artifactId>
               <executions>
-		<execution>
+        <execution>
                   <id>attach-javadocs</id>
                   <goals>
                     <goal>jar</goal>
-		  </goals>
-		</execution>
+          </goals>
+        </execution>
               </executions>
             </plugin>
-	    <plugin>
+        <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-source-plugin</artifactId>
               <executions>
-		<execution>
+        <execution>
                   <id>attach-sources</id>
                   <goals>
                     <goal>jar</goal>
                   </goals>
-		</execution>
+        </execution>
               </executions>
             </plugin>
-	  </plugins>
-	</build>
+      </plugins>
+    </build>
       </profile>
 
       <profile>
-	<id>sample</id>
-	<build>
-	  <plugins>
-	    <plugin>
+    <id>sample</id>
+    <build>
+      <plugins>
+        <plugin>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>exec-maven-plugin</artifactId>
               <version>1.1</version>
               <executions>
-		<execution>
-		  <phase>compile</phase>
-		  <goals>
-		    <goal>java</goal>
-		  </goals>
-		</execution>
+        <execution>
+          <phase>compile</phase>
+          <goals>
+            <goal>java</goal>
+          </goals>
+        </execution>
               </executions>
               <configuration>
-		<mainClass>be.ac.ulg.montefiore.run.jahmm.apps.sample.SimpleExample</mainClass>
+        <mainClass>be.ac.ulg.montefiore.run.jahmm.apps.sample.SimpleExample</mainClass>
               </configuration>
-	    </plugin>
-	  </plugins>
-	</build>
+        </plugin>
+      </plugins>
+    </build>
       </profile>
     </profiles>
 
 
     <reporting>
       <plugins>
-	<plugin>
+    <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-	</plugin>
+    </plugin>
       </plugins>
     </reporting>
 
