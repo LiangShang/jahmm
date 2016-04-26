@@ -1,5 +1,5 @@
 JAHMM   -   QUICK START GUIDE
------------------------------
+=============================
 
 
 Jahmm is a Java library implementing the various, well-known algorithms
@@ -17,8 +17,7 @@ Most information related to this software can be found there.
 
 
 
-COMPILING
-~~~~~~~~~
+## COMPILING
 
 To compile the library, you simply need to compile all the files held
 in the src/main/java directory.  Thus, simply calling 'javac' with all the
@@ -38,8 +37,7 @@ The generated .class files will be put in the 'target/classes' directory.
 
 
 
-RUNNING
-~~~~~~~
+## RUNNING
 
 Notice that if you just want to try the library, you don't have to
 compile it.  '.jar' files for each jahmm release are available on the
@@ -58,8 +56,7 @@ You can also put the '.jar' file in your classpath.
 
 
 
-TESTING
-~~~~~~~
+## TESTING
 
 Once the library has been compiled, you can launch a sample program by typing:
 
@@ -79,8 +76,7 @@ src/test/java/be/ac/ulg/montefiore/run/jahmm/test directory.  To launch those te
 use 'ant junit' or 'mvn test'.
 
 
-FILES
-~~~~~
+## FILES
 
 - pom.xml: the 'maven' project file.
 - build.xml: the 'ant' build file.
@@ -98,8 +94,7 @@ FILES
 - THANKS: contributors.
 
 
-CONTACT
-~~~~~~~
+## CONTACT
 
 Jahmm's author is Jean-Marc Francois.  
 Feel free to send comments and questions related to this library at:
