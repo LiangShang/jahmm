@@ -5,26 +5,29 @@
 
 package be.ac.ulg.montefiore.run.jahmm.test;
 
-import java.io.*;
-
-import junit.framework.TestCase;
 import be.ac.ulg.montefiore.run.jahmm.apps.cli.AbnormalTerminationException;
 import be.ac.ulg.montefiore.run.jahmm.apps.cli.Cli;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.*;
 
 
-public class CliTest extends TestCase {
+public class CliTest {
     private InputStream origIn;
     private PrintStream origOut;
     private PrintStream origErr;
 
 
-    protected void setUp() {
+    @Before
+    public void setUp() {
         origIn = System.in;
         origOut = System.out;
         origErr = System.err;
     }
 
-
+    @Test
     public void testCli()
             throws IOException {
         ByteArrayOutputStream err = new ByteArrayOutputStream();
@@ -57,7 +60,7 @@ public class CliTest extends TestCase {
 
 
     protected void flush(ByteArrayOutputStream out, ByteArrayOutputStream err) {
-        assertEquals("Something has been written on the \"standard\"" +
+        Assert.assertEquals("Something has been written on the \"standard\"" +
                         " error stream ('" + err.toString() + "')",
                 err.toString().length(), 0);
 

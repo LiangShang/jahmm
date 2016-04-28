@@ -13,14 +13,15 @@ import be.ac.ulg.montefiore.run.jahmm.learn.BaumWelchScaledLearner;
 import be.ac.ulg.montefiore.run.jahmm.learn.KMeansLearner;
 import be.ac.ulg.montefiore.run.jahmm.toolbox.KullbackLeiblerDistanceCalculator;
 import be.ac.ulg.montefiore.run.jahmm.toolbox.MarkovGenerator;
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class LearnerTest
-        extends TestCase {
+public class LearnerTest {
     final static private double DELTA = 5.E-3;
 
     private Hmm<ObservationInteger> hmm;
@@ -28,7 +29,8 @@ public class LearnerTest
     private KullbackLeiblerDistanceCalculator klc;
 
 
-    protected void setUp() {
+    @Before
+    public void setUp() {
         hmm = new Hmm<ObservationInteger>(3, new OpdfIntegerFactory(10));
         hmm.getOpdf(0).fit(new ObservationInteger(1), new ObservationInteger(2));
 
@@ -42,7 +44,7 @@ public class LearnerTest
         klc = new KullbackLeiblerDistanceCalculator();
     }
 
-
+    @Test
     public void testBaumWelch() {
         /* Model sequences using BW algorithm */
 
@@ -50,21 +52,21 @@ public class LearnerTest
 
         Hmm<ObservationInteger> bwHmm = bwl.learn(hmm, sequences);
 
-        assertEquals(0., klc.distance(bwHmm, hmm), DELTA);
+        Assert.assertEquals(0., klc.distance(bwHmm, hmm), DELTA);
         
         /* Model sequences using the scaled BW algorithm */
 
         BaumWelchScaledLearner bwsl = new BaumWelchScaledLearner();
         bwHmm = bwsl.learn(hmm, sequences);
 
-        assertEquals(0., klc.distance(bwHmm, hmm), DELTA);
+        Assert.assertEquals(0., klc.distance(bwHmm, hmm), DELTA);
     }
 
-
+    @Test
     public void testKMeans() {
         KMeansLearner<ObservationInteger> kml =
                 new KMeansLearner<ObservationInteger>(5,
                         new OpdfIntegerFactory(10), sequences);
-        assertEquals(0., klc.distance(kml.learn(), hmm), DELTA);
+        Assert.assertEquals(0., klc.distance(kml.learn(), hmm), DELTA);
     }
 }

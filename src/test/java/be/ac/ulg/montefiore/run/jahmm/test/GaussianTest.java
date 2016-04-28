@@ -5,16 +5,19 @@
 
 package be.ac.ulg.montefiore.run.jahmm.test;
 
-import junit.framework.TestCase;
 import be.ac.ulg.montefiore.run.distributions.GaussianDistribution;
 import be.ac.ulg.montefiore.run.distributions.RandomDistribution;
-import be.ac.ulg.montefiore.run.jahmm.*;
+import be.ac.ulg.montefiore.run.jahmm.ObservationReal;
+import be.ac.ulg.montefiore.run.jahmm.ObservationVector;
+import be.ac.ulg.montefiore.run.jahmm.OpdfGaussianMixture;
+import be.ac.ulg.montefiore.run.jahmm.OpdfMultiGaussian;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.Arrays;
 
 
-public class GaussianTest
-        extends TestCase {
+public class GaussianTest {
     final static private double DELTA = 5.E-2;
     final static private int nbObservations = 10000;
 
@@ -42,13 +45,14 @@ public class GaussianTest
         return true;
     }
 
+    @Test
     public void testGaussianFit() {
         double[] mean = {2., 4.};
         double[][] covariance = {{3., 2.}, {2., 4.}};
 
         OpdfMultiGaussian omg1 = new OpdfMultiGaussian(mean, covariance);
 
-        assertEquals(omg1.dimension(), 2);
+        Assert.assertEquals(omg1.dimension(), 2);
 
         ObservationVector[] obs = new ObservationVector[nbObservations];
         for (int i = 0; i < obs.length; i++)
@@ -59,22 +63,23 @@ public class GaussianTest
                 new double[]{0., 0.},
                 new double[][]{{0., 0.}, {0., 0.}});
 
-        assertEquals(omg2.dimension(), 2);
+        Assert.assertEquals(omg2.dimension(), 2);
 
         omg2.fit(obs);
 
-        assertTrue("Different mean arrays: " +
+        Assert.assertTrue("Different mean arrays: " +
                         toString(mean) + " differ from " + toString(omg2.mean()),
                 equalsArrays(mean, omg2.mean()));
 
         for (int i = 0; i < 2; i++)
-            assertTrue("Different covariance arrays: " +
+            Assert.assertTrue("Different covariance arrays: " +
                             toString(omg1.covariance()[i]) + " differ from " +
                             toString(omg2.covariance()[i]),
                     equalsArrays(omg1.covariance()[i], omg2.covariance()[i],
                             DELTA * 10.));
     }
 
+    @Test
     public void testGaussianMixture() {
         /*
          * Generates observations related to 2 gaussians : (0., 1.) and (4., 2.).
@@ -96,28 +101,29 @@ public class GaussianTest
         for (int i = 0; i < 20; i++)
             gm.fit(observations);
 
-        assertTrue("Wrong proportion values (" + gm.proportions()[0] + ", " +
+        Assert.assertTrue("Wrong proportion values (" + gm.proportions()[0] + ", " +
                         gm.proportions()[1] + ")",
                 equalsArrays(new double[]{1. / 3., 2. / 3.},
                         gm.proportions(), DELTA));
 
-        assertTrue("Wrong mean values (" + gm.means()[0] + ", " +
+        Assert.assertTrue("Wrong mean values (" + gm.means()[0] + ", " +
                         gm.means()[1] + ")",
                 equalsArrays(new double[]{0., 4.}, gm.means(),
                         DELTA * 10.));
-        assertTrue("Wrong variance values (" + gm.variances()[0] + ", " +
+        Assert.assertTrue("Wrong variance values (" + gm.variances()[0] + ", " +
                         gm.variances()[1] + ")",
                 equalsArrays(new double[]{1., 2.}, gm.variances(),
                         DELTA * 10.));
     }
 
+    @Test
     public void testMultiGaussianFit() {
         double[] mean = {2., 4.};
         double[][] covariance = {{3., 2.}, {2., 4.}};
 
         OpdfMultiGaussian omg1 = new OpdfMultiGaussian(mean, covariance);
 
-        assertEquals(omg1.dimension(), 2);
+        Assert.assertEquals(omg1.dimension(), 2);
 
         ObservationVector[] obs = new ObservationVector[100000];
         for (int i = 0; i < obs.length; i++)
@@ -127,14 +133,14 @@ public class GaussianTest
                 new double[]{0., 0.},
                 new double[][]{{0., 0.}, {0., 0.}});
 
-        assertEquals(omg2.dimension(), 2);
+        Assert.assertEquals(omg2.dimension(), 2);
 
         omg2.fit(obs);
 
-        assertTrue("Different mean arrays", equalsArrays(mean, omg2.mean()));
+        Assert.assertTrue("Different mean arrays", equalsArrays(mean, omg2.mean()));
 
         for (int i = 0; i < 2; i++)
-            assertTrue("Different covariance arrays",
+            Assert.assertTrue("Different covariance arrays",
                     equalsArrays(omg1.covariance()[i], omg2.covariance()[i]));
     }
 }

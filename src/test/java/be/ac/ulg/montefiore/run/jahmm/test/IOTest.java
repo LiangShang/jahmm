@@ -5,16 +5,16 @@
 
 package be.ac.ulg.montefiore.run.jahmm.test;
 
+import be.ac.ulg.montefiore.run.jahmm.*;
+import be.ac.ulg.montefiore.run.jahmm.io.*;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.*;
 import java.util.List;
 
-import junit.framework.TestCase;
-import be.ac.ulg.montefiore.run.jahmm.*;
-import be.ac.ulg.montefiore.run.jahmm.io.*;
 
-
-public class IOTest
-        extends TestCase {
+public class IOTest {
     protected final String integerSequences =
             "# A simple data file with integer observations.\n" +
                     "1;2;3; # The first sequence\n" +
@@ -47,6 +47,7 @@ public class IOTest
             "MultiGaussianOPDF [ [ 5. 5. ] [ [ 1.2 .3 ] [ .3 4. ] ] ]";
 
 
+    @Test
     public void testBinaryHmm() {
         PipedInputStream pis = new PipedInputStream();
         Hmm<?> hmm = null;
@@ -59,14 +60,15 @@ public class IOTest
             HmmBinaryWriter.write(pos, hmm);
             hmm = HmmBinaryReader.read(pis);
         } catch (IOException e) {
-            fail(e.toString());
+            Assert.fail(e.toString());
         }
 
-        assertEquals(4, hmm.nbStates());
-        assertEquals(3, ((OpdfInteger) hmm.getOpdf(0)).nbEntries());
+        Assert.assertEquals(4, hmm.nbStates());
+        Assert.assertEquals(3, ((OpdfInteger) hmm.getOpdf(0)).nbEntries());
     }
 
 
+    @Test
     public void testOPDF()
             throws IOException {
         opdfCheck(integerOPDFString, new OpdfIntegerReader(),
@@ -94,11 +96,12 @@ public class IOTest
             writer.write(pw, opdf);
             reader.read(new StreamTokenizer(pr));
         } catch (FileFormatException e) {
-            fail(e.toString());
+            Assert.fail(e.toString());
         }
     }
 
 
+    @Test
     public void testHmm()
             throws IOException {
         Hmm<ObservationInteger> hmm = null;
@@ -108,11 +111,11 @@ public class IOTest
             Reader reader = new StringReader(hmmString);
             hmm = HmmReader.read(reader, new OpdfIntegerReader(4));
         } catch (FileFormatException e) {
-            fail(e.toString());
+            Assert.fail(e.toString());
         }
 
-        assertEquals(2, hmm.nbStates());
-        assertEquals(4, ((OpdfInteger) hmm.getOpdf(0)).nbEntries());
+        Assert.assertEquals(2, hmm.nbStates());
+        Assert.assertEquals(4, ((OpdfInteger) hmm.getOpdf(0)).nbEntries());
 
         /* Test HmmWriter */
         PipedWriter pw = new PipedWriter();
@@ -122,14 +125,15 @@ public class IOTest
             HmmWriter.write(pw, new OpdfIntegerWriter(), hmm);
             hmm = HmmReader.read(pr, new OpdfIntegerReader(4));
         } catch (FileFormatException e) {
-            fail(e.toString());
+            Assert.fail(e.toString());
         }
 
-        assertEquals(2, hmm.nbStates());
-        assertEquals(4, ((OpdfInteger) hmm.getOpdf(0)).nbEntries());
+        Assert.assertEquals(2, hmm.nbStates());
+        Assert.assertEquals(4, ((OpdfInteger) hmm.getOpdf(0)).nbEntries());
     }
 
 
+    @Test
     public void testInteger()
             throws IOException, FileFormatException {
         Reader reader = new StringReader(integerSequences);
@@ -138,14 +142,15 @@ public class IOTest
                         readSequences(new ObservationIntegerReader(), reader);
         reader.close();
 
-        assertEquals("Wrong number of sequences read", 3, sequences.size());
-        assertEquals("Wrong first observation",
+        Assert.assertEquals("Wrong number of sequences read", 3, sequences.size());
+        Assert.assertEquals("Wrong first observation",
                 1, sequences.get(0).get(0).value);
-        assertEquals("Wrong last observation",
+        Assert.assertEquals("Wrong last observation",
                 5, sequences.get(2).get(5).value);
     }
 
 
+    @Test
     public void testVector()
             throws IOException, FileFormatException {
         Reader reader = new StringReader(vectorSequences);
@@ -154,11 +159,11 @@ public class IOTest
                         readSequences(new ObservationVectorReader(), reader);
         reader.close();
 
-        assertEquals("Wrong number of sequences read", 2, sequences.size());
-        assertTrue("Wrong first observation", GaussianTest.
+        Assert.assertEquals("Wrong number of sequences read", 2, sequences.size());
+        Assert.assertTrue("Wrong first observation", GaussianTest.
                 equalsArrays(sequences.get(0).get(0).values(),
                         new double[]{1.1, 2.2}, 0.));
-        assertTrue("Wrong last observation", GaussianTest.
+        Assert.assertTrue("Wrong last observation", GaussianTest.
                 equalsArrays(sequences.get(1).get(4).values(),
                         new double[]{7., 8.}, 0.));
     }
